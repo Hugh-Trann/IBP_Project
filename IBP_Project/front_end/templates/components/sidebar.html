@@ -1,0 +1,37 @@
+<div class="sidebar-brand">
+    <span class="ibp-logo-text">IBP</span>
+</div>
+
+<div class="sidebar-wrapper">
+    <a href="/" class="sidebar-link {% if active_page == 'home' %}active{% endif %}">
+        Home
+    </a>
+
+    <a href="/upload" class="sidebar-link {% if active_page == 'upload' %}active{% endif %}">
+        Upload
+    </a>
+
+    <div class="sidebar-group-title">Analysis</div>
+
+    <a href="/analysis/sales" class="sidebar-link subtle-item {% if active_page == 'sales' %}active{% endif %}">
+        Sales Performance
+    </a>
+
+    <a href="/analysis/reviews" class="sidebar-link subtle-item {% if active_page == 'reviews' %}active{% endif %}">
+        Customer Review
+    </a>
+
+    <a href="/analysis/forecast" class="sidebar-link subtle-item {% if active_page == 'forecast' %}active{% endif %}">
+        Forecast
+    </a>
+
+    <div class="sidebar-group-title">Reports</div>
+
+    <a href="/report/view" class="sidebar-link subtle-item {% if active_page == 'view_report' %}active{% endif %}">
+        View Report
+    </a>
+
+    <a href="/report/download" class="sidebar-link subtle-item {% if active_page == 'download_report' %}active{% endif %}">
+        Download Report
+    </a>
+</div>

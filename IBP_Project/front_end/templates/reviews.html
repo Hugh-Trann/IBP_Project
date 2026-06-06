@@ -1,0 +1,347 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="review-panel">
+    <div class="review-native-layout">
+        <!-- Left filters -->
+        <div class="review-filter-panel">
+            <div class="card shadow-sm border-0 dashboard-card review-filter-card">
+                <div class="card-body review-filter-card-body">
+                    <h3 class="review-panel-title">Filters</h3>
+
+                    <div class="review-filter-group">
+                        <div class="review-filter-header">
+                            <span>Year</span>
+                        </div>
+                        <div id="reviewYearFilters" class="review-filter-list"></div>
+                    </div>
+
+                    <div class="review-filter-group">
+                        <div class="review-filter-header">
+                            <span>Month</span>
+                        </div>
+                        <div id="reviewMonthFilters" class="review-filter-list"></div>
+                    </div>
+
+                    <div class="review-filter-group">
+                        <div class="review-filter-header">
+                            <span>Category</span>
+                        </div>
+                        <div id="reviewCategoryFilters" class="review-filter-list"></div>
+                    </div>
+
+                    <div class="review-filter-actions">
+                        <button id="reviewApplyBtn" class="ibp-btn-primary" type="button">Apply</button>
+                        <button id="reviewResetBtn" class="ibp-btn-dark" type="button">Reset</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right content -->
+        <div class="review-content-panel">
+            <div class="review-tab-bar">
+                <button id="tabReviewSummaryBtn" class="review-tab-btn active" type="button">Review Summary</button>
+                <button id="tabScoreReviewBtn" class="review-tab-btn" type="button">Score Review</button>
+                <button id="tabSentimentReviewBtn" class="review-tab-btn" type="button">Sentiment Review</button>
+                <button id="tabReviewTopicBtn" class="review-tab-btn" type="button">Review by Topic</button>
+            </div>
+
+            <!-- Review Summary -->
+            <div id="reviewSummaryTabContent" class="review-tab-content active">
+                <div class="reviews-panel-spacing">
+                    <div class="reviews-top-kpis">
+                        <div class="card shadow-sm border-0 dashboard-card reviews-kpi-pill-card">
+                            <div class="card-body">
+                                <div class="reviews-kpi-pill-title">Total Reviews</div>
+                                <div id="reviewSummaryTotalReviews" class="reviews-kpi-pill-value">0</div>
+                            </div>
+                        </div>
+
+                        <div class="card shadow-sm border-0 dashboard-card reviews-kpi-pill-card">
+                            <div class="card-body">
+                                <div class="reviews-kpi-pill-title">Avg Review Score</div>
+                                <div id="reviewSummaryAvgScore" class="reviews-kpi-pill-value">0</div>
+                            </div>
+                        </div>
+
+                        <div class="card shadow-sm border-0 dashboard-card reviews-kpi-pill-card">
+                            <div class="card-body">
+                                <div class="reviews-kpi-pill-title">Positive Reviews</div>
+                                <div id="reviewSummaryPositiveReviews" class="reviews-kpi-pill-value">0</div>
+                            </div>
+                        </div>
+
+                        <div class="card shadow-sm border-0 dashboard-card reviews-kpi-pill-card">
+                            <div class="card-body">
+                                <div class="reviews-kpi-pill-title">Negative Reviews</div>
+                                <div id="reviewSummaryNegativeReviews" class="reviews-kpi-pill-value">0</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="reviews-three-table-layout">
+                        <div class="card shadow-sm border-0 dashboard-card">
+                            <div class="card-body">
+                                <h3 class="reviews-table-title-positive">Positive Review</h3>
+                                <div class="table-responsive">
+                                    <table class="table table-sm reviews-data-table mb-0">
+                                        <thead>
+                                            <tr>
+                                                <th>Category</th>
+                                                <th class="text-end">Total</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="reviewPositiveBody"></tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <th>Total</th>
+                                                <th class="text-end" id="reviewPositiveTotal">0</th>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card shadow-sm border-0 dashboard-card">
+                            <div class="card-body">
+                                <h3 class="reviews-table-title-neutral">Neutral Review</h3>
+                                <div class="table-responsive">
+                                    <table class="table table-sm reviews-data-table mb-0">
+                                        <thead>
+                                            <tr>
+                                                <th>Category</th>
+                                                <th class="text-end">Total</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="reviewNeutralBody"></tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <th>Total</th>
+                                                <th class="text-end" id="reviewNeutralTotal">0</th>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card shadow-sm border-0 dashboard-card">
+                            <div class="card-body">
+                                <h3 class="reviews-table-title-negative">Negative Review</h3>
+                                <div class="table-responsive">
+                                    <table class="table table-sm reviews-data-table mb-0">
+                                        <thead>
+                                            <tr>
+                                                <th>Category</th>
+                                                <th class="text-end">Total</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="reviewNegativeBody"></tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <th>Total</th>
+                                                <th class="text-end" id="reviewNegativeTotal">0</th>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="reviews-chart-block">
+                        <div class="card shadow-sm border-0 dashboard-card reviews-chart-card">
+                            <div class="card-body">
+                                <h3 class="reviews-section-title">Review Score Direction</h3>
+                                <canvas id="reviewSummaryDirectionChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Score Review -->
+            <div id="scoreReviewTabContent" class="review-tab-content">
+                <div class="reviews-panel-spacing">
+                    <div class="reviews-top-kpis">
+                        <div class="card shadow-sm border-0 dashboard-card reviews-kpi-pill-card">
+                            <div class="card-body">
+                                <div class="reviews-kpi-pill-title">Total Sales</div>
+                                <div id="scoreReviewTotalSales" class="reviews-kpi-pill-value">0</div>
+                            </div>
+                        </div>
+
+                        <div class="card shadow-sm border-0 dashboard-card reviews-kpi-pill-card">
+                            <div class="card-body">
+                                <div class="reviews-kpi-pill-title">Total Transactions</div>
+                                <div id="scoreReviewTotalTransactions" class="reviews-kpi-pill-value">0</div>
+                            </div>
+                        </div>
+
+                        <div class="card shadow-sm border-0 dashboard-card reviews-kpi-pill-card">
+                            <div class="card-body">
+                                <div class="reviews-kpi-pill-title">Total Review</div>
+                                <div id="scoreReviewTotalReviews" class="reviews-kpi-pill-value">0</div>
+                            </div>
+                        </div>
+
+                        <div class="card shadow-sm border-0 dashboard-card reviews-kpi-pill-card">
+                            <div class="card-body">
+                                <div class="reviews-kpi-pill-title">Avg Review Score</div>
+                                <div id="scoreReviewAvgScore" class="reviews-kpi-pill-value">0</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="reviews-two-chart-layout">
+                        <div class="card shadow-sm border-0 dashboard-card reviews-chart-card">
+                            <div class="card-body">
+                                <h3 class="reviews-section-title">Sales & Avg Review Score by Month</h3>
+                                <canvas id="scoreReviewMonthlyChart"></canvas>
+                            </div>
+                        </div>
+
+                        <div class="card shadow-sm border-0 dashboard-card reviews-chart-card">
+                            <div class="card-body">
+                                <h3 class="reviews-section-title">Sales & Avg Review Score by Category</h3>
+                                <canvas id="scoreReviewCategoryChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sentiment Review -->
+            <div id="sentimentReviewTabContent" class="review-tab-content">
+                <div class="reviews-panel-spacing">
+                    <div class="reviews-top-kpis">
+                        <div class="card shadow-sm border-0 dashboard-card reviews-kpi-pill-card">
+                            <div class="card-body">
+                                <div class="reviews-kpi-pill-title">Total Sales</div>
+                                <div id="sentimentReviewTotalSales" class="reviews-kpi-pill-value">0</div>
+                            </div>
+                        </div>
+
+                        <div class="card shadow-sm border-0 dashboard-card reviews-kpi-pill-card">
+                            <div class="card-body">
+                                <div class="reviews-kpi-pill-title">Total Transactions</div>
+                                <div id="sentimentReviewTotalTransactions" class="reviews-kpi-pill-value">0</div>
+                            </div>
+                        </div>
+
+                        <div class="card shadow-sm border-0 dashboard-card reviews-kpi-pill-card">
+                            <div class="card-body">
+                                <div class="reviews-kpi-pill-title">Total Review</div>
+                                <div id="sentimentReviewTotalReviews" class="reviews-kpi-pill-value">0</div>
+                            </div>
+                        </div>
+
+                        <div class="card shadow-sm border-0 dashboard-card reviews-kpi-pill-card">
+                            <div class="card-body">
+                                <div class="reviews-kpi-pill-title">Avg Sentiment Score</div>
+                                <div id="sentimentReviewAvgScore" class="reviews-kpi-pill-value">0</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="reviews-two-chart-layout">
+                        <div class="card shadow-sm border-0 dashboard-card reviews-chart-card">
+                            <div class="card-body">
+                                <h3 class="reviews-section-title">Sales & Avg Sentiment Score by Month</h3>
+                                <canvas id="sentimentReviewMonthlyChart"></canvas>
+                            </div>
+                        </div>
+
+                        <div class="card shadow-sm border-0 dashboard-card reviews-chart-card">
+                            <div class="card-body">
+                                <h3 class="reviews-section-title">Sales & Avg Sentiment Score by Category</h3>
+                                <canvas id="sentimentReviewCategoryChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Review by Topic -->
+            <div id="reviewTopicTabContent" class="review-tab-content">
+                <div class="reviews-panel-spacing">
+                    <div class="reviews-topic-layout">
+                        <div class="reviews-topic-row">
+                            <div class="card shadow-sm border-0 dashboard-card reviews-topic-card reviews-topic-chart-card">
+                                <div class="card-body">
+                                    <h3 class="reviews-section-title">Number of Review by Topic</h3>
+                                    <div class="reviews-topic-canvas-wrap">
+                                        <canvas id="reviewTopicCountChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card shadow-sm border-0 dashboard-card reviews-topic-table-card">
+                                <div class="card-body">
+                                    <h3 class="reviews-section-title">Review Count by Topic</h3>
+                                    <div class="table-responsive reviews-topic-table-wrap">
+                                        <table class="table table-sm reviews-data-table mb-0 reviews-topic-data-table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Topic</th>
+                                                    <th class="text-end">Reviews</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="reviewTopicCountBody"></tbody>
+                                            <tfoot>
+                                                <tr>
+                                                    <th>Total</th>
+                                                    <th class="text-end" id="reviewTopicCountTotal">0</th>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="reviews-topic-row">
+                            <div class="card shadow-sm border-0 dashboard-card reviews-topic-card reviews-topic-chart-card">
+                                <div class="card-body">
+                                    <h3 class="reviews-section-title">Average Sentiment Score by Topic</h3>
+                                    <div class="reviews-topic-canvas-wrap">
+                                        <canvas id="reviewTopicSentimentChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card shadow-sm border-0 dashboard-card reviews-topic-table-card">
+                                <div class="card-body">
+                                    <h3 class="reviews-section-title">Sentiment Score by Topic</h3>
+                                    <div class="table-responsive reviews-topic-table-wrap">
+                                        <table class="table table-sm reviews-data-table mb-0 reviews-topic-data-table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Topic</th>
+                                                    <th class="text-end">Avg Sentiment Score</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="reviewTopicSentimentBody"></tbody>
+                                            <tfoot>
+                                                <tr>
+                                                    <th>Average</th>
+                                                    <th class="text-end" id="reviewTopicSentimentAvg">0.00</th>
+                                                </tr>
+                                            </tfoot>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="/static/reviews_dashboard.js"></script>
+{% endblock %}

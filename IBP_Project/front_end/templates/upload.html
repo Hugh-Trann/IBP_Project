@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="ibp-upload-layout">
+  
+  <!-- Left side -->
+  <div class="upload-panel">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <p class="text-secondary mb-3">
+          Choose a <strong>CSV</strong> or <strong>Excel</strong> file to preview and upload.
+        </p>
+
+        <div id="alertArea"></div>
+
+        <div id="dropZone" class="dropzone mb-3">
+          <div class="text-center">
+            <div class="fs-5 fw-semibold">Drag & drop file here</div>
+            <div class="text-secondary">or</div>
+            <label class="btn btn-primary mt-2">
+              Choose file
+              <input id="fileInput" type="file" accept=".csv,.xlsx" hidden />
+            </label>
+            <div class="small text-secondary mt-2">Max size: 50 MB</div>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Dataset type</label>
+          <select id="datasetType" class="form-select">
+            <option value="sales">Sales data</option>
+            <option value="reviews">Customer reviews</option>
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label fw-semibold">Dataset year</label>
+          <select id="datasetYear" class="form-select">
+            <option value="2015">2015</option>
+            <option value="2016">2016</option>
+            <option value="2017">2017</option>
+            <option value="2018">2018</option>
+          </select>
+        </div>
+
+        <div class="mb-2">
+          <div class="d-flex justify-content-between">
+            <span class="small text-secondary">Upload progress</span>
+            <span id="progressText" class="small text-secondary">0%</span>
+          </div>
+          <div class="progress" role="progressbar" aria-label="Upload progress">
+            <div id="progressBar" class="progress-bar" style="width: 0%"></div>
+          </div>
+        </div>
+
+        <div class="d-grid gap-2 mt-3">
+          <button id="btnUpload" class="btn btn-success" disabled>
+            Upload
+          </button>
+
+          <button id="btnCancel" type="button" class="btn btn-outline-secondary" disabled>
+            Cancel
+          </button>
+        </div>
+
+        <div id="statusMessage" class="mt-3 small text-primary"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right side -->
+  <div class="preview-panel">
+    <div class="card preview-card preview-empty" id="previewCard">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center mb-2">
+          <h5 class="card-title mb-0">Preview</h5>
+          <span id="fileBadge" class="badge text-bg-secondary">No file</span>
+        </div>
+
+        <div class="preview-box-body" id="previewBoxBody">
+          <div id="previewArea" class="text-secondary">
+            Choose a file to automatically load and preview the first rows.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+{% endblock %}

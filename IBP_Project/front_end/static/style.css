@@ -1,0 +1,3347 @@
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  color: #1f2933;
+}
+
+.ibp-layout {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+
+  background:
+    /* 🔥 diagonal white shine (main streak) */
+    linear-gradient(
+      120deg,
+      rgba(255, 255, 255, 0.35) 0%,
+      rgba(255, 255, 255, 0.25) 15%,
+      rgba(255, 255, 255, 0.08) 30%,
+      transparent 35%
+    ),
+
+    /* 🔥 second diagonal highlight (right side) */
+    linear-gradient(
+      50deg,
+      transparent 50%,
+      rgba(255, 255, 255, 0.45) 65%,
+      rgba(255, 255, 255, 0.15) 80%,
+      rgba(255, 255, 255, 50) 90%,
+      transparent 100%
+    ),
+
+    /* 🔥 radial glow center-right */
+    radial-gradient(
+      circle at 75% 60%,
+      rgba(120, 220, 140, 0.35),
+      transparent 50%
+    ),
+
+    /* 🔥 radial glow upper-middle */
+    radial-gradient(
+      circle at 55% 20%,
+       rgba(255, 255, 255, 0.15) 65%,
+      rgba(255, 255, 255, 50) 80%,
+      rgba(255, 255, 255, 100) 90%,
+      transparent 45%
+    ),
+
+    /* 🔥 base gradient */
+    linear-gradient(
+      135deg,
+      #dff4e3 0%,
+      #c3e8ca 25%,
+      #eaf8ee 70%,
+      #d6eddc 100%
+    );
+}
+
+.ibp-sidebar {
+  width: 260px;
+  min-width: 260px;
+  max-width: 260px;
+  background: transparent;
+  border-right: 1px solid rgba(0, 0, 0, 0.08);
+  overflow-y: auto;
+  padding: 0;
+}
+
+.ibp-right-panel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: transparent;
+}
+
+.sidebar-brand {
+  height: 84px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  /* border-bottom: 1px solid rgba(0, 0, 0, 0.08); */
+  overflow: hidden;
+}
+
+/* .ibp-logo-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+} */
+
+.ibp-logo-text {
+  font-size: 5rem;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+
+  /* gradient text */
+  background: linear-gradient(
+    180deg,
+    #ffffff 0%,
+    #a8e6b5 40%,
+    #2f9e44 100%
+  );
+
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  /* 3D depth */
+  text-shadow:
+    0 1px 0 #ffffff,
+    0 2px 0 #cdebd3,
+    0 4px 10px rgba(0, 0, 0, 0.303);
+
+  position: relative;
+}
+
+.ibp-logo-text::after {
+  content: "IBP";
+  position: absolute;
+  left: 0;
+  top: 0;
+
+  background: linear-gradient(
+    120deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.0) 30%,
+    rgba(255, 255, 255, 0.8) 50%,
+    rgba(255, 255, 255, 0.0) 70%,
+    transparent 100%
+  );
+
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  animation: ibpLogoShine 10s ease-in-out infinite;
+}
+
+/* =========================
+   IBP BUTTON STYLE (GLOBAL)
+   ========================= */
+
+.ibp-btn-primary,
+.ibp-btn-dark {
+    border: none;
+    border-radius: 12px;
+    padding: 10px 18px;
+    font-weight: 700;
+    font-size: 0.95rem;
+    line-height: 1.2;
+    cursor: pointer;
+
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.12);
+    transition: transform 0.18s ease,
+                box-shadow 0.18s ease,
+                filter 0.18s ease;
+}
+
+/* Primary (Apply) */
+.ibp-btn-primary {
+    background: #2f80ed;
+    color: #fff;
+}
+
+/* Dark (Reset) */
+.ibp-btn-dark {
+    background: #1f2937;
+    color: #fff;
+}
+
+/* Hover */
+.ibp-btn-primary:hover,
+.ibp-btn-dark:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 14px rgba(15, 23, 42, 0.16);
+    filter: brightness(1.03);
+}
+
+/* Click */
+.ibp-btn-primary:active,
+.ibp-btn-dark:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.12);
+    filter: brightness(0.98);
+}
+
+/* Focus */
+.ibp-btn-primary:focus-visible,
+.ibp-btn-dark:focus-visible {
+    outline: 2px solid rgba(47, 128, 237, 0.35);
+    outline-offset: 2px;
+}
+
+@keyframes ibpLogoShine {
+  0% {
+    background-position: -150% 0;
+  }
+  50% {
+    background-position: 150% 0;
+  }
+  100% {
+    background-position: -150% 0;
+  }
+}
+
+.ibp-logo-text,
+.ibp-logo-text::after {
+  background-size: 200% 100%;
+}
+
+.ibp-page-header {
+  height: 84px;
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+  background: rgba(255, 255, 255, 0.08);
+  /* border-bottom: 1px solid rgba(0, 0, 0, 0.08); */
+  box-sizing: border-box;
+}
+
+.ibp-page-header h3 {
+  margin: 0;
+  padding: 0;
+  line-height: 1;
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #20323f;
+}
+
+.ibp-page-content {
+  flex: 1;
+  overflow: hidden;
+  padding: 20px;
+  background: transparent;
+}
+
+.sidebar-wrapper {
+  padding: 16px 14px 20px 14px;
+}
+
+.sidebar-group-title {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: #5d6f66;
+  margin-top: 24px;
+  margin-bottom: 12px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.sidebar-link {
+  display: block;
+  text-decoration: none;
+  color: #1f2933;
+  padding: 12px 12px;
+  border-radius: 12px;
+  margin-bottom: 8px;
+  transition: all 0.2s ease;
+  font-size: 0.98rem;
+}
+
+.sidebar-link:hover {
+  background-color: rgba(255, 255, 255, 0.25);
+  color: #1c6b34;
+}
+
+.sidebar-link.active {
+  color: #ffffff;
+  background: linear-gradient(90deg, #0d6efd 0%, #4da3ff 100%);
+  box-shadow: 0 6px 14px rgba(13, 110, 253, 0.18);
+}
+
+.sidebar-link.subtle-item {
+  padding-left: 18px;
+  position: relative;
+}
+
+.sidebar-link.subtle-item::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: #5ba36d;
+  position: absolute;
+  left: 2px;
+  top: 18px;
+}
+
+.ibp-panel {
+  background: rgba(255, 255, 255, 0.72);
+  /* border: 1px solid rgba(255, 255, 255, 0.35); */
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  backdrop-filter: blur(4px);
+}
+
+.ibp-card {
+  background: rgba(255, 255, 255, 0.88);
+  border: 1px solid rgba(220, 230, 223, 0.9);
+  border-radius: 12px;
+  padding: 22px;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+}
+
+.ibp-btn-primary {
+  background: linear-gradient(90deg, #0d6efd 0%, #4da3ff 100%);
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 18px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.ibp-btn-dark {
+  background-color: #1f2933;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 18px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.dropzone {
+  border: 2px dashed #cbd5e1;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.82);
+  padding: 28px;
+  transition: 0.15s ease-in-out;
+}
+
+.dropzone.dragover {
+  border-color: #0d6efd;
+  box-shadow: 0 0 0 4px rgba(13, 110, 253, 0.12);
+}
+
+.ibp-upload-layout {
+  display: grid;
+  grid-template-columns: 340px minmax(0, 1fr);
+  gap: 24px;
+  align-items: start;
+}
+
+.upload-panel {
+  width: 100%;
+  max-width: 340px;
+}
+
+.preview-panel {
+  width: 100%;
+  min-width: 0;
+}
+
+.preview-card {
+  transition: height 0.25s ease;
+}
+
+.preview-card.preview-empty {
+  min-height: 140px;
+}
+
+.preview-card.preview-loaded {
+  height: 620px;
+}
+
+.preview-card .card-body {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  height: 100%;
+}
+
+.preview-box-body {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+}
+
+.preview-box-body .table-responsive {
+  overflow: auto;
+}
+
+.preview-box-body table {
+  margin-bottom: 0;
+}
+
+/* .preview-panel .card {
+  height: calc(100vh - 170px);
+}
+
+.preview-panel .card-body {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 0;
+}
+
+.preview-box-body {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+}
+
+.preview-panel .table-responsive {
+  max-height: none;
+  overflow: auto;
+} */
+
+/* -----HOME------ */
+.home-dashboard-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 340px;
+  gap: 18px;
+  align-items: start;
+}
+
+.home-main-left {
+  min-width: 0;
+}
+
+.home-right-panel {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.home-summary-row {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.summary-card,
+.side-card {
+  background: rgba(255, 255, 255, 0.82);
+}
+
+.dashboard-card .card-body {
+  padding: 16px 18px;
+}
+
+.home-section-title {
+  color: #20d463;
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.home-section-title.center {
+  text-align: center;
+}
+
+#salesPerformanceChart {
+  width: 100% !important;
+  height: 420px !important;
+}
+
+.home-summary-table,
+.home-side-table {
+  font-size: 0.92rem;
+}
+
+.home-summary-table thead th,
+.home-summary-table tfoot th,
+.home-summary-table tfoot td,
+.home-side-table thead th {
+  background: #1e88f5;
+  color: #ffffff;
+  border: none;
+  padding: 6px 8px;
+}
+
+.home-summary-table tbody td,
+.home-side-table tbody td {
+  background: rgba(0, 0, 0, 0.03);
+  padding: 4px 6px;
+}
+
+.home-summary-table tfoot th,
+.home-summary-table tfoot td {
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.side-card .card-body {
+  padding: 10px 14px;
+}
+
+.side-card {
+  margin-bottom: 0 !important;
+}
+
+.side-table-wrap {
+  max-height: none;
+  overflow: visible;
+}
+
+.home-side-table {
+  margin-bottom: 0;
+}
+
+.home-side-table tbody tr td {
+  white-space: nowrap;
+}
+
+.ibp-panel {
+  padding: 18px;
+}
+
+@media (max-width: 1400px) {
+  .home-dashboard-grid {
+    grid-template-columns: minmax(0, 1fr) 320px;
+  }
+
+  #salesPerformanceChart {
+    height: 360px !important;
+  }
+}
+
+@media (max-width: 1200px) {
+  .home-dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .home-summary-row {
+    grid-template-columns: 1fr;
+  }
+
+  .home-right-panel {
+    gap: 16px;
+  }
+}
+
+/* ------Overview------- */
+.report-container {
+  width: 100%;
+  height: 80vh;
+  min-height: 720px;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #fff;
+}
+
+/* =========================
+   SALES
+   ========================= */
+
+.sales-native-layout {
+  display: grid;
+  grid-template-columns: 210px minmax(0, 1fr);
+  gap: 14px;
+  align-items: start;
+}
+
+.sales-filter-panel {
+  min-width: 0;
+  position: sticky;
+  top: 12px;
+}
+
+.sales-filter-panel .dashboard-card {
+  max-height: calc(100vh - 120px);
+  overflow: hidden;
+}
+
+.sales-filter-panel .card-body {
+  max-height: calc(100vh - 120px);
+  overflow-y: auto;
+  padding: 14px 14px;
+}
+
+.sales-panel-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #20323f;
+  margin-bottom: 12px;
+}
+
+.sales-filter-group {
+  margin-bottom: 14px;
+}
+
+.sales-filter-header {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #e66c2f;
+  margin-bottom: 6px;
+}
+
+.sales-filter-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.sales-check-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.92rem;
+  color: #20323f;
+  cursor: pointer;
+}
+
+.sales-check-item input {
+  accent-color: #1e88f5;
+}
+
+.sales-day-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 6px;
+}
+
+.sales-day-btn {
+  border: 1px solid rgba(0, 0, 0, 0.18);
+  border-radius: 6px;
+  background: #ffffff;
+  color: #20323f;
+  font-size: 0.88rem;
+  padding: 7px 0;
+  cursor: pointer;
+  transition: 0.15s ease;
+}
+
+.sales-day-btn:hover {
+  background: rgba(30, 136, 245, 0.08);
+}
+
+.sales-day-btn.active {
+  background: #1f2933;
+  color: #ffffff;
+  border-color: #1f2933;
+}
+
+.sales-filter-actions {
+  margin-top: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  padding-top: 10px;
+}
+
+.sales-content-panel {
+  min-width: 0;
+}
+
+.sales-tab-bar {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.sales-tab-btn {
+  border: none;
+  border-radius: 8px;
+  padding: 8px 16px;
+  background: rgba(255, 255, 255, 0.78);
+  color: #20323f;
+  font-weight: 700;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.sales-tab-btn.active {
+  background: #1e88f5;
+  color: #ffffff;
+}
+
+.sales-tab-content {
+  display: none;
+}
+
+.sales-tab-content.active {
+  display: block;
+}
+
+.sales-section-title {
+  color: #20d463;
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.sales-subtitle {
+  font-size: 0.84rem;
+  color: #64748b;
+  line-height: 1.35;
+  margin-bottom: 10px;
+}
+
+.sales-data-table {
+  font-size: 0.9rem;
+}
+
+.sales-data-table thead th,
+.sales-data-table tfoot th,
+.sales-data-table tfoot td {
+  background: #2f86df;
+  color: #ffffff;
+  border: none;
+  padding: 5px 8px;
+}
+
+.sales-data-table tbody td {
+  background: rgba(0, 0, 0, 0.03);
+  padding: 4px 8px;
+}
+
+.sales-daily-top {
+  display: grid;
+  grid-template-columns: 1.48fr 0.52fr;
+  gap: 12px;
+  margin-bottom: 14px;
+  align-items: center;
+}
+
+.sales-daily-bottom {
+  display: grid;
+  gap: 14px;
+}
+
+.sales-daily-bottom-3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.sales-summary-card,
+.sales-chart-card,
+.sales-kpi-card-premium {
+  background: rgba(255, 255, 255, 0.94);
+  border: 1px solid rgba(148, 163, 184, 0.16) !important;
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(15, 23, 42, 0.08);
+}
+
+.sales-summary-card{
+  width: 90%;
+}
+
+.sales-summary-table thead th,
+.sales-summary-table tfoot th,
+.sales-summary-table tfoot td {
+  background: linear-gradient(90deg, #2f86df 0%, #56a6f7 100%);
+  color: #ffffff;
+  border: none;
+  padding: 5px 8px;
+}
+
+.sales-summary-table tbody td {
+  background: rgba(0, 0, 0, 0.03);
+  padding: 4px 8px;
+}
+
+.sales-summary-card .card-body {
+  padding: 14px 14px 12px 14px;
+}
+
+.sales-summary-table {
+  width: 100%;
+  table-layout: fixed;
+  font-size: 0.88rem;
+}
+
+.sales-summary-table th:nth-child(1),
+.sales-summary-table td:nth-child(1) {
+  width: 20%;
+}
+
+.sales-summary-table th:nth-child(2),
+.sales-summary-table td:nth-child(2) {
+  width: 10%;
+}
+
+.sales-summary-table th:nth-child(3),
+.sales-summary-table td:nth-child(3) {
+  width: 10%;
+}
+
+.sales-summary-table th:nth-child(4),
+.sales-summary-table td:nth-child(4) {
+  width: 10%;
+}
+
+.sales-kpi-card-premium {
+  margin-right: 100px;
+}
+
+.sales-kpi-card-premium .card-body {
+  height: 100%;
+  min-height: 104px;
+  max-height: 104px;
+  display: flex;
+  align-items: flex-center;
+  justify-content: center;
+  padding: 2px 12px;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at top left, rgba(96, 165, 250, 0.18), transparent 40%),
+    radial-gradient(circle at bottom right, rgba(34, 197, 94, 0.12), transparent 40%),
+    linear-gradient(180deg, rgba(255,255,255,0.96), rgba(241,245,249,0.96));
+  border-radius: 20px;
+}
+
+.sales-kpi-inner {
+  max-width: 400px;
+  margin: 5 5;
+  text-align: center;
+}
+
+.sales-kpi-title {
+  color: #e66c2f;
+  font-size: 1rem;
+  font-weight: 900;
+  text-align: center;
+  padding-top: 10px;
+  margin-bottom: 5px;
+  line-height: 1.1;
+}
+
+.sales-kpi-value {
+  font-size: clamp(1.0rem, 1.5vw, 1.5rem);
+  font-weight: 800;
+  line-height: 0.95;
+  padding-top: 10px;
+  padding-bottom: 2px;
+  margin-bottom: 1px;
+}
+
+.sales-kpi-note {
+  font-size: 0.8rem;
+  color: #64748b;
+  max-width: 200px;
+  margin: 0 auto;
+  padding: 2px 2px;
+  line-height: 1.05;
+}
+
+.sales-pie-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 170px;
+  gap: 12px;
+  align-items: center;
+}
+
+.sales-pie-canvas-wrap {
+  position: relative;
+  height: 360px;
+}
+
+.sales-chart-legend {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-self: center;
+}
+
+.sales-chart-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 20px;
+}
+
+.sales-chart-legend-swatch {
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+  flex: 0 0 12px;
+}
+
+.sales-chart-legend-label {
+  font-size: 0.84rem;
+  color: #334155;
+  line-height: 1.2;
+  word-break: break-word;
+}
+
+#dailyOrdersByCategoryChart,
+#dailySalesByCategoryChart,
+#dailyProfitByCategoryChart {
+  width: 100% !important;
+  height: 360px !important;
+}
+
+.sales-monthly-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 220px;
+  gap: 14px;
+  align-items: start;
+}
+
+.sales-monthly-left {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.sales-monthly-top-tables {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.sales-monthly-kpis {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.sales-kpi-pill-card .card-body {
+  padding: 10px 12px;
+}
+
+.sales-kpi-pill-title {
+  color: #e88955;
+  font-size: 0.92rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 6px;
+}
+
+.sales-kpi-pill-value {
+  text-align: center;
+  font-size: 1.45rem;
+  font-weight: 700;
+  color: #1e88f5;
+  border: 5px solid #48a0f4;
+  border-radius: 999px;
+  padding: 6px 8px;
+  background: rgba(255, 255, 255, 0.92);
+}
+
+.sales-monthly-chart-wrap {
+  min-width: 0;
+}
+
+.sales-monthly-chart-wrap .dashboard-card .card-body {
+  min-height: 500px;
+}
+
+#monthlyRevenueProfitByDayChart {
+  width: 100% !important;
+  height: 420px !important;
+}
+
+/* =========================
+   SALES COMPARISON TAB
+   Add below the SALES section in style.css
+   ========================= */
+
+.sales-native-layout.comparison-mode {
+  grid-template-columns: 1fr;
+}
+
+.sales-native-layout.comparison-mode .sales-filter-panel {
+  display: none;
+}
+
+.sales-comparison-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.sales-comparison-control-card .card-body,
+.sales-comparison-chart-card .card-body {
+  padding: 14px 16px;
+}
+
+.sales-comparison-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.sales-comparison-form-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr)) auto;
+  gap: 12px;
+  align-items: end;
+}
+
+.sales-compare-field {
+  min-width: 0;
+}
+
+.sales-compare-label {
+  display: block;
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #e66c2f;
+  margin-bottom: 6px;
+}
+
+.sales-compare-select {
+  min-height: 42px;
+  border-radius: 10px;
+  border: 1px solid rgba(31, 41, 55, 0.12);
+  background: rgba(255, 255, 255, 0.94);
+}
+
+.sales-comparison-actions {
+  display: flex;
+  gap: 10px;
+  align-items: end;
+}
+
+.sales-comparison-chart-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.sales-comparison-chart-card {
+  min-width: 0;
+}
+
+.sales-comparison-canvas-wrap {
+  position: relative;
+  height: 380px;
+}
+
+#comparisonSalesChart,
+#comparisonProfitChart {
+  width: 100% !important;
+  height: 380px !important;
+}
+
+@media (max-width: 1280px) {
+  .sales-comparison-form-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 992px) {
+  .sales-comparison-chart-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .sales-comparison-form-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .sales-comparison-form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .sales-comparison-actions {
+    justify-content: flex-start;
+  }
+
+  .sales-comparison-canvas-wrap,
+  #comparisonSalesChart,
+  #comparisonProfitChart {
+    height: 300px !important;
+  }
+}
+
+
+@media (max-width: 1250px) {
+  .sales-native-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .sales-filter-panel {
+    position: static;
+  }
+
+  .sales-filter-panel .dashboard-card,
+  .sales-filter-panel .card-body {
+    max-height: none;
+    overflow: visible;
+  }
+
+  .sales-daily-top,
+  .sales-daily-bottom,
+  .sales-monthly-layout,
+  .sales-monthly-top-tables {
+    grid-template-columns: 1fr;
+  }
+
+  .sales-pie-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .sales-chart-legend {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .sales-monthly-kpis {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .sales-monthly-kpis {
+    grid-template-columns: 1fr;
+  }
+
+  .sales-day-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .sales-pie-canvas-wrap {
+    height: 280px;
+  }
+
+  #dailyOrdersByCategoryChart,
+  #dailySalesByCategoryChart,
+  #dailyProfitByCategoryChart {
+    height: 280px !important;
+  }
+
+  #monthlyRevenueProfitByDayChart {
+    height: 300px !important;
+  }
+
+  #salesPerformanceChart {
+    height: 300px !important;
+  }
+}
+
+/* =========================
+   REVIEWS DASHBOARD
+   ========================= */
+
+.review-panel {
+    height: calc(100vh - 110px);
+    overflow: hidden;
+}
+
+.review-native-layout {
+    display: flex;
+    gap: 16px;
+    height: 100%;
+    min-height: 0;
+}
+
+/* =========================
+   FILTER PANEL
+   ========================= */
+
+.review-filter-panel {
+    flex: 0 0 230px;
+    max-width: 230px;
+    height: 100%;
+}
+
+.review-filter-card {
+    height: 100%;
+    border-radius: 12px;
+}
+
+.review-filter-card-body {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 16px 14px;
+}
+
+.review-filter-card-body::-webkit-scrollbar {
+    width: 6px;
+}
+
+.review-filter-card-body::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.25);
+    border-radius: 4px;
+}
+
+.review-panel-title {
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: #1f2937;
+}
+
+.review-filter-group {
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    margin-bottom: 12px;
+}
+
+.review-filter-header {
+    font-weight: 700;
+    color: #f97316;
+    margin-bottom: 8px;
+}
+
+.review-filter-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.review-filter-option {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: 0.95rem;
+    cursor: pointer;
+    line-height: 1.35;
+    color: #374151;
+}
+
+.review-filter-option input[type="checkbox"],
+.review-filter-option input[type="radio"] {
+    width: 16px;
+    height: 16px;
+    margin-top: 2px;
+    accent-color: #8b5cf6;
+    flex: 0 0 auto;
+}
+
+.review-filter-actions {
+    margin-top: auto;
+    display: flex;
+    gap: 8px;
+    padding-top: 10px;
+    position: sticky;
+    bottom: 0;
+}
+
+/* =========================
+   CONTENT PANEL
+   ========================= */
+
+.review-content-panel {
+    flex: 1;
+    min-width: 0;
+    height: 100%;
+    overflow-y: auto;
+    padding-right: 4px;
+}
+
+.review-tab-bar {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+}
+
+.review-tab-btn {
+    border: none;
+    background: #e5e7eb;
+    color: #1f2937;
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.review-tab-btn:hover {
+    background: #d1d5db;
+}
+
+.review-tab-btn.active {
+    background: #2f80ed;
+    color: white;
+}
+
+.review-tab-content {
+    display: none;
+}
+
+.review-tab-content.active {
+    display: block;
+}
+
+/* =========================
+   COMMON REVIEW BLOCKS
+   ========================= */
+
+.reviews-panel-spacing {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.dashboard-card {
+    background: #f7f7f7;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.06);
+}
+
+/* =========================
+   KPI CARDS
+   ========================= */
+
+.reviews-top-kpis {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(180px, 1fr));
+    gap: 14px;
+    align-items: stretch;
+}
+
+.reviews-kpi-pill-card {
+    min-height: 92px;
+    border-radius: 22px;
+    border: 4px solid #4f9cf7 !important;
+    background: #f5f7fa;
+}
+
+.reviews-kpi-pill-card .card-body {
+    min-height: 82px;
+    padding: 12px 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+}
+
+.reviews-kpi-pill-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #ef8a62;
+    text-align: center;
+    margin-bottom: 2px;
+}
+
+.reviews-kpi-pill-value {
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: #2388f2;
+    text-align: center;
+    line-height: 1.1;
+}
+
+/* =========================
+   TABLES
+   ========================= */
+
+.reviews-three-table-layout {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(220px, 1fr));
+    gap: 14px;
+}
+
+.reviews-three-table-layout .card-body,
+.reviews-chart-block .card-body,
+.reviews-two-chart-layout .card-body,
+.reviews-topic-layout .card-body {
+    padding: 10px 12px 8px;
+}
+
+.reviews-table-title-positive,
+.reviews-table-title-neutral,
+.reviews-table-title-negative {
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: #2fd66f;
+    text-align: center;
+    margin-bottom: 8px;
+}
+
+.reviews-data-table {
+    font-size: 0.95rem;
+    margin-bottom: 0;
+}
+
+.reviews-data-table thead th {
+    border-bottom: 2px solid #4f9cf7;
+    font-weight: 700;
+    color: #111827;
+    padding-top: 4px;
+    padding-bottom: 4px;
+}
+
+.reviews-data-table td,
+.reviews-data-table th {
+    padding-top: 4px;
+    padding-bottom: 4px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.reviews-data-table tfoot th,
+.reviews-data-table tfoot td {
+    font-weight: 800;
+}
+
+/* =========================
+   CHARTS
+   ========================= */
+
+.reviews-chart-block,
+.reviews-two-chart-layout,
+.reviews-topic-layout {
+    display: grid;
+    gap: 16px;
+}
+
+.reviews-two-chart-layout,
+.reviews-topic-layout {
+    grid-template-columns: 1fr;
+}
+
+.reviews-section-title {
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: #2fd66f;
+    margin-bottom: 8px;
+}
+
+.reviews-chart-card canvas {
+    width: 100% !important;
+    height: 260px !important;
+}
+
+.reviews-topic-card canvas {
+    width: 100% !important;
+    height: 240px !important;
+}
+
+#reviewSummaryDirectionChart {
+    height: 240px !important;
+}
+
+/* =========================
+   RESPONSIVE
+   ========================= */
+
+@media (max-width: 1200px) {
+    .reviews-top-kpis {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .reviews-three-table-layout {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    body {
+        overflow: auto;
+    }
+
+    .review-panel {
+        height: auto;
+        overflow: visible;
+    }
+
+    .review-native-layout {
+        flex-direction: column;
+        height: auto;
+    }
+
+    .review-filter-panel {
+        max-width: 100%;
+        width: 100%;
+        height: auto;
+    }
+
+    .review-filter-card {
+        height: auto;
+    }
+
+    .review-filter-card-body {
+        height: auto;
+        overflow: visible;
+    }
+
+    .review-content-panel {
+        height: auto;
+        overflow: visible;
+    }
+
+    .reviews-top-kpis {
+        grid-template-columns: 1fr;
+    }
+
+    .reviews-chart-card canvas,
+    .reviews-topic-card canvas,
+    #reviewSummaryDirectionChart {
+        height: 220px !important;
+    }
+  }
+
+/* -------Forecast------------ */
+
+/* -------Forecast------------ */
+
+/* =========================
+   FORECAST PAGE LAYOUT
+   ========================= */
+
+.forecast-panel {
+    height: calc(100vh - 110px);
+    overflow: hidden;
+}
+
+.forecast-native-layout {
+    display: flex;
+    gap: 16px;
+    height: 100%;
+    min-height: 0;
+}
+
+.forecast-filter-panel {
+    flex: 0 0 230px;
+    max-width: 230px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.forecast-year-card {
+    border-radius: 12px;
+}
+
+.forecast-year-card .card-body {
+    padding: 14px 16px;
+    text-align: center;
+}
+
+.forecast-year-label {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #f97316;
+    margin-bottom: 6px;
+}
+
+.forecast-year-value {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #1f2937;
+}
+
+.forecast-filter-card {
+    flex: 1;
+    border-radius: 12px;
+}
+
+.forecast-filter-card-body {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 16px 14px;
+}
+
+.forecast-panel-title {
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: #1f2937;
+    font-size: 1.2rem;
+}
+
+.forecast-filter-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 14px;
+}
+
+.forecast-filter-header {
+    font-weight: 700;
+    color: #f97316;
+    margin-bottom: 8px;
+}
+
+.forecast-filter-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.forecast-filter-option {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    font-size: 0.95rem;
+    line-height: 1.35;
+    color: #374151;
+    cursor: pointer;
+}
+
+.forecast-filter-option input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    margin-top: 2px;
+    accent-color: #111827;
+    flex: 0 0 auto;
+}
+
+.forecast-filter-actions {
+    margin-top: auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    padding-top: 10px;
+    position: sticky;
+    bottom: 0;
+    background: transparent;
+}
+
+.forecast-content-panel {
+    flex: 1;
+    min-width: 0;
+    height: 100%;
+    overflow-y: auto;
+    padding-right: 4px;
+}
+
+.forecast-tab-bar {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+}
+
+.forecast-tab-btn {
+    border: none;
+    background: #e5e7eb;
+    color: #1f2937;
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.forecast-tab-btn:hover {
+    background: #d1d5db;
+}
+
+.forecast-tab-btn.active {
+    background: #2f80ed;
+    color: #ffffff;
+}
+
+.forecast-tab-content {
+    display: none;
+}
+
+.forecast-tab-content.active {
+    display: block;
+}
+
+.forecast-panel-spacing {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* =========================
+   TOP ROW: CHART + TABLE
+   ========================= */
+
+.forecast-sales-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 300px;
+    gap: 14px;
+    align-items: stretch;
+}
+
+.forecast-chart-card,
+.forecast-table-card {
+    height: 380px;
+}
+
+.forecast-chart-card .card-body,
+.forecast-table-card .card-body,
+.forecast-pie-card .card-body {
+    padding: 12px 16px;
+}
+
+.forecast-chart-card .card-body {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 0;
+    padding-bottom: 8px;
+}
+
+.forecast-table-card .card-body {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    min-height: 0;
+}
+
+/* make transaction table a bit bigger */
+#categoryForecastTabContent .forecast-sales-layout {
+    grid-template-columns: minmax(0, 1fr) 360px;
+}
+
+#categoryForecastTabContent .forecast-table-card {
+    height: 390px;
+}
+
+.forecast-section-title,
+.forecast-table-title {
+    font-size: 1.2rem;
+    font-weight: 800;
+    color: #2fd66f;
+    margin-bottom: 8px;
+    flex: 0 0 auto;
+}
+
+.forecast-chart-card canvas {
+    width: 100% !important;
+    height: auto !important;
+    flex: 1 1 auto;
+    min-height: 0;
+    display: block;
+}
+
+.forecast-table-card .table-responsive {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    border-radius: 8px;
+}
+
+/* =========================
+   PIE / DOUGHNUT SECTION
+   ========================= */
+
+.forecast-pie-card {
+    margin-top: -2px;
+}
+
+.forecast-pie-card .card-body {
+    padding-top: 10px;
+    padding-bottom: 12px;
+}
+
+.forecast-pie-layout {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+    min-height: 300px;
+}
+
+.forecast-pie-canvas-wrap {
+    position: relative;
+    flex: 0 0 360px;
+    width: 360px;
+    height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.forecast-chart-legend {
+    flex: 0 0 220px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    justify-content: center;
+    align-self: center;
+    min-width: 0;
+}
+
+#salesForecastCategoryPieChart,
+#categoryForecastPieChart {
+    width: 100% !important;
+    height: 300px !important;
+}
+
+.forecast-legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 20px;
+    
+}
+
+.forecast-legend-swatch {
+    width: 12px;
+    height: 12px;
+    border-radius: 3px;
+    flex: 0 0 12px;
+}
+
+.forecast-legend-label {
+    font-size: 0.88rem;
+    color: #334155;
+    line-height: 1.2;
+    word-break: break-word;
+}
+
+/* =========================
+   TABLE STYLE
+   ========================= */
+
+.forecast-data-table {
+    font-size: 0.92rem;
+    margin-bottom: 0;
+    width: 100%;
+    table-layout: fixed;
+}
+
+.forecast-data-table thead th {
+    border-bottom: 2px solid #60a5fa;
+    font-weight: 700;
+    color: #f97316;
+    position: sticky;
+    top: 0;
+    background: #ffffff;
+    z-index: 2;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.forecast-data-table td,
+.forecast-data-table th {
+    padding-top: 4px;
+    padding-bottom: 4px;
+    vertical-align: middle;
+}
+
+.forecast-data-table tfoot th,
+.forecast-data-table tfoot td {
+    font-weight: 800;
+    color: #2388f2;
+    position: sticky;
+    bottom: 0;
+    background: #ffffff;
+    z-index: 2;
+}
+
+.forecast-data-table td.text-end,
+.forecast-data-table th.text-end {
+    text-align: right;
+}
+
+/* default sales table column sizing */
+#salesForecastTabContent .forecast-data-table th:nth-child(1),
+#salesForecastTabContent .forecast-data-table td:nth-child(1) {
+    width: 45%;
+}
+
+#salesForecastTabContent .forecast-data-table th:nth-child(2),
+#salesForecastTabContent .forecast-data-table td:nth-child(2) {
+    width: 55%;
+}
+
+/* wider transaction table */
+#categoryForecastTabContent .forecast-data-table th:nth-child(1),
+#categoryForecastTabContent .forecast-data-table td:nth-child(1) {
+    width: 58%;
+}
+
+#categoryForecastTabContent .forecast-data-table th:nth-child(2),
+#categoryForecastTabContent .forecast-data-table td:nth-child(2) {
+    width: 42%;
+}
+
+/* =========================
+   RESPONSIVE
+   ========================= */
+
+@media (max-width: 1200px) {
+    .forecast-sales-layout,
+    #categoryForecastTabContent .forecast-sales-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .forecast-chart-card,
+    .forecast-table-card,
+    #categoryForecastTabContent .forecast-table-card {
+        height: auto;
+        min-height: 340px;
+    }
+}
+
+@media (max-width: 1100px) {
+    .forecast-pie-layout {
+        flex-direction: column;
+        align-items: center;
+        gap: 14px;
+    }
+
+    .forecast-pie-canvas-wrap {
+        flex: 0 0 auto;
+        width: 320px;
+        height: 280px;
+    }
+
+    .forecast-chart-legend {
+        flex: 0 0 auto;
+        width: 100%;
+        max-width: 700px;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    #salesForecastCategoryPieChart,
+    #categoryForecastPieChart {
+        height: 280px !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .forecast-panel {
+        height: auto;
+        overflow: visible;
+    }
+
+    .forecast-native-layout {
+        flex-direction: column;
+        height: auto;
+    }
+
+    .forecast-filter-panel {
+        max-width: 100%;
+        width: 100%;
+        height: auto;
+    }
+
+    .forecast-filter-card {
+        height: auto;
+    }
+
+    .forecast-filter-card-body {
+        height: auto;
+        overflow: visible;
+    }
+
+    .forecast-content-panel {
+        height: auto;
+        overflow: visible;
+    }
+
+    .forecast-chart-card,
+    .forecast-table-card,
+    #categoryForecastTabContent .forecast-table-card {
+        height: auto;
+        min-height: 320px;
+    }
+
+    .forecast-chart-card canvas,
+    #salesForecastCategoryPieChart,
+    #categoryForecastPieChart {
+        height: 260px !important;
+    }
+
+    .forecast-pie-canvas-wrap {
+        height: 260px;
+    }
+
+    .forecast-data-table {
+        font-size: 0.88rem;
+    }
+}
+
+/* =========================================
+   REPORT PAGES
+   view_report.html + report_download.html
+   Final clean patch
+   Add at END of style.css
+   ========================================= */
+
+/* ---------- Shared report page shell ---------- */
+
+.report-page,
+.report-download-page {
+  min-width: 0;
+}
+
+.report-page .ibp-panel,
+.report-download-page .ibp-panel {
+  background: rgba(255, 255, 255, 0.76);
+  border-radius: 14px;
+  padding: 20px 22px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  backdrop-filter: blur(4px);
+}
+
+.report-header h2,
+.report-download-page h1 {
+  color: #20323f;
+  letter-spacing: 0.01em;
+}
+
+.report-header p,
+.report-download-page .text-muted {
+  color: #5d6f66 !important;
+}
+
+/* ---------- Summary cards ---------- */
+
+.report-summary-card {
+  background: rgba(255, 255, 255, 0.86);
+  border: 1px solid rgba(220, 230, 223, 0.95);
+  border-radius: 12px;
+  padding: 0;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.report-summary-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.10);
+}
+
+.report-summary-card .text-muted {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #6b7280 !important;
+  margin-bottom: 8px;
+}
+
+.report-summary-card .fs-3 {
+  color: #20323f;
+  line-height: 1.1;
+}
+
+/* ---------- Section title ---------- */
+
+.report-section-title {
+  color: #20d463;
+  font-size: 1.08rem;
+  font-weight: 700;
+  margin-bottom: 14px;
+  letter-spacing: 0.01em;
+}
+
+/* ---------- Tables ---------- */
+
+.report-page .table,
+.report-download-page .table {
+  font-size: 0.92rem;
+  margin-bottom: 0;
+}
+
+.report-page .table thead th,
+.report-download-page .table thead th {
+  background: #2f86df;
+  color: #ffffff;
+  border: none;
+  padding: 7px 10px;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+
+.report-page .table tbody td,
+.report-page .table tbody th,
+.report-download-page .table tbody td,
+.report-download-page .table tbody th {
+  background: rgba(0, 0, 0, 0.03);
+  padding: 7px 10px;
+  vertical-align: middle;
+  border-color: rgba(0, 0, 0, 0.06);
+}
+
+.report-page .table-sm thead th,
+.report-download-page .table-sm thead th {
+  padding: 6px 9px;
+}
+
+.report-page .table-sm tbody td,
+.report-page .table-sm tbody th,
+.report-download-page .table-sm tbody td,
+.report-download-page .table-sm tbody th {
+  padding: 6px 9px;
+}
+
+.report-page .table-striped > tbody > tr:nth-of-type(odd) > *,
+.report-download-page .table-striped > tbody > tr:nth-of-type(odd) > * {
+  background-color: rgba(0, 0, 0, 0.02);
+}
+
+.report-page .table-responsive,
+.report-download-page .table-responsive {
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+/* ---------- KPI summary tables on report pages ---------- */
+
+.report-page table tbody th,
+.report-download-page table tbody th {
+  color: #20323f;
+  font-weight: 700;
+  width: 42%;
+}
+
+/* ---------- Paragraphs ---------- */
+
+.report-page p,
+.report-download-page p {
+  color: #334155;
+  line-height: 1.6;
+  margin-bottom: 0.7rem;
+}
+
+/* ---------- Filter area in view_report ---------- */
+
+.report-page .form-label {
+  font-weight: 700;
+  color: #20323f;
+  margin-bottom: 6px;
+}
+
+.report-page .form-select,
+.report-page .form-control {
+  border-radius: 10px;
+  border: 1px solid rgba(31, 41, 55, 0.12);
+  background: rgba(255, 255, 255, 0.92);
+  min-height: 42px;
+  box-shadow: none;
+}
+
+.report-page .form-select:focus,
+.report-page .form-control:focus {
+  border-color: #2f80ed;
+  box-shadow: 0 0 0 3px rgba(47, 128, 237, 0.14);
+}
+
+/* ---------- Zone cards ---------- */
+
+.report-zone-card {
+  background: rgba(255, 255, 255, 0.84);
+  border: 1px solid rgba(220, 230, 223, 0.95);
+  border-radius: 12px;
+  padding: 16px 16px 14px 16px;
+  height: 100%;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.06);
+  transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.report-zone-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 18px rgba(0, 0, 0, 0.09);
+}
+
+.report-zone-card h6 {
+  font-size: 0.98rem;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.report-zone-card p:last-child {
+  margin-bottom: 0;
+}
+
+/* Slight visual distinction by position */
+.report-zone-card strong {
+  color: #20323f;
+}
+
+.report-page .row.g-3 > div:nth-child(1) .report-zone-card h6 {
+  color: #16a34a; /* strong zone */
+}
+
+.report-page .row.g-3 > div:nth-child(2) .report-zone-card h6 {
+  color: #dc2626; /* risk zone */
+}
+
+.report-page .row.g-3 > div:nth-child(3) .report-zone-card h6 {
+  color: #2563eb; /* growth zone */
+}
+
+.report-page .row.g-3 > div:nth-child(4) .report-zone-card h6 {
+  color: #d97706; /* watchlist */
+}
+
+/* ---------- Accordion ---------- */
+
+.report-page .accordion-item {
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 10px !important;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.82);
+  margin-bottom: 10px;
+}
+
+.report-page .accordion-button {
+  font-weight: 700;
+  color: #20323f;
+  background: rgba(255, 255, 255, 0.88);
+  box-shadow: none;
+}
+
+.report-page .accordion-button:not(.collapsed) {
+  color: #1e88f5;
+  background: rgba(30, 136, 245, 0.08);
+}
+
+.report-page .accordion-button:focus {
+  box-shadow: none;
+}
+
+/* ---------- Download report page refinements ---------- */
+
+.report-download-page .ibp-panel {
+  background: rgba(255, 255, 255, 0.88);
+}
+
+.report-download-page h3 {
+  color: #20323f;
+  font-size: 1.2rem;
+}
+
+.report-download-page h5 {
+  color: #e66c2f;
+  font-size: 1rem;
+}
+
+.report-download-page section .table {
+  margin-top: 6px;
+}
+
+.report-download-page .table-bordered > :not(caption) > * > * {
+  border-width: 1px;
+}
+
+.report-download-page .table thead th {
+  background: #1e88f5;
+}
+
+.report-download-page .table tbody td,
+.report-download-page .table tbody th {
+  background: #ffffff;
+}
+
+/* ---------- Buttons on report pages ---------- */
+
+.report-page .ibp-btn-primary,
+.report-page .ibp-btn-dark,
+.report-download-page .ibp-btn-primary,
+.report-download-page .ibp-btn-dark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  min-width: 120px;
+  text-align: center;
+}
+
+.report-page .ibp-btn-dark,
+.report-download-page .ibp-btn-dark {
+  color: #ffffff !important;
+}
+
+.report-page .ibp-btn-primary,
+.report-download-page .ibp-btn-primary {
+  color: #ffffff !important;
+}
+
+/* ---------- Utility spacing tweaks ---------- */
+
+.report-page .mb-4,
+.report-download-page .mb-4 {
+  margin-bottom: 1.15rem !important;
+}
+
+.report-page .mb-3,
+.report-download-page .mb-3 {
+  margin-bottom: 0.9rem !important;
+}
+
+/* ---------- Section anchor spacing ---------- */
+
+#executive-summary,
+#sales-performance,
+#review-analysis,
+#integrated-insight,
+#recommendations,
+#forecast-outlook,
+#supporting-data {
+  scroll-margin-top: 18px;
+}
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 1200px) {
+  .report-page .fs-3 {
+    font-size: 1.7rem !important;
+  }
+}
+
+@media (max-width: 992px) {
+  .report-page .ibp-panel,
+  .report-download-page .ibp-panel {
+    padding: 18px;
+  }
+
+  .report-page .report-header,
+  .report-download-page .report-header {
+    gap: 12px;
+  }
+
+  .report-page .text-end,
+  .report-download-page .text-end {
+    text-align: left !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .report-page .ibp-panel,
+  .report-download-page .ibp-panel {
+    padding: 16px;
+  }
+
+  .report-section-title {
+    font-size: 1rem;
+  }
+
+  .report-page .table,
+  .report-download-page .table {
+    font-size: 0.88rem;
+  }
+
+  .report-summary-card .fs-3 {
+    font-size: 1.5rem !important;
+  }
+}
+
+/* ---------- Print / PDF ---------- */
+
+@media print {
+  html,
+  body {
+    height: auto !important;
+    overflow: visible !important;
+    background: #ffffff !important;
+  }
+
+  .ibp-layout {
+    display: block !important;
+    height: auto !important;
+    background: #ffffff !important;
+  }
+
+  .ibp-sidebar,
+  .ibp-page-header,
+  .no-print {
+    display: none !important;
+  }
+
+  .ibp-right-panel,
+  .ibp-page-content {
+    display: block !important;
+    height: auto !important;
+    overflow: visible !important;
+    padding: 0 !important;
+    background: #ffffff !important;
+  }
+
+  .report-download-page,
+  .report-page {
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  .report-download-page .ibp-panel,
+  .report-page .ibp-panel,
+  .report-summary-card,
+  .report-zone-card {
+    background: #ffffff !important;
+    box-shadow: none !important;
+    border: 1px solid #d9dee3 !important;
+    backdrop-filter: none !important;
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .report-download-page .table thead th,
+  .report-page .table thead th {
+    background: #e9eef5 !important;
+    color: #111827 !important;
+    border: 1px solid #d1d5db !important;
+  }
+
+  .report-download-page .table tbody td,
+  .report-download-page .table tbody th,
+  .report-page .table tbody td,
+  .report-page .table tbody th {
+    background: #ffffff !important;
+    color: #111827 !important;
+    border: 1px solid #d1d5db !important;
+  }
+
+  .report-download-page h1,
+  .report-download-page h3,
+  .report-download-page h5,
+  .report-page h2,
+  .report-section-title {
+    color: #111827 !important;
+  }
+
+  a,
+  a:visited {
+    text-decoration: none !important;
+    color: inherit !important;
+  }
+}
+
+/* =========================================
+   FIX SCROLL FOR REPORT PAGES
+   ========================================= */
+
+/* Ensure full app height */
+html, body {
+  height: 100%;
+  overflow: hidden; /* prevent whole page scroll */
+}
+
+/* Main layout must fill screen */
+.ibp-layout {
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* Right panel (header + content) */
+.ibp-right-panel {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* Header stays fixed */
+.ibp-page-header {
+  flex-shrink: 0;
+}
+
+/* THIS IS THE KEY FIX */
+.ibp-page-content {
+  flex: 1;
+  overflow-y: auto;   /* enable vertical scroll */
+  overflow-x: hidden;
+  padding-right: 6px; /* avoid scrollbar overlap */
+}
+
+/* Smooth scroll feeling */
+.ibp-page-content {
+  scroll-behavior: smooth;
+}
+
+/* Optional: nicer scrollbar */
+.ibp-page-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.ibp-page-content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.ibp-page-content::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.15);
+  border-radius: 10px;
+}
+
+.ibp-page-content::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.25);
+}
+
+/* =========================================
+   REPORT PAGE REFINEMENTS
+   ========================================= */
+
+/* 1. Filter dropdown arrow must always show */
+.report-page .form-select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  padding-right: 2.75rem;
+  background-color: rgba(255, 255, 255, 0.92);
+  background-image:
+    url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23334155' viewBox='0 0 16 16'><path d='M1.5 5.5l6 6 6-6' stroke='%23334155' stroke-width='1.8' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 0.95rem center;
+  background-size: 14px 14px;
+}
+
+/* 2. Three action buttons in one row */
+.report-filter-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.report-filter-actions .ibp-btn-primary,
+.report-filter-actions .ibp-btn-dark {
+  flex: 1;
+  min-width: 0;
+}
+
+/* 3. KPI cards in view_report */
+.report-summary-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  min-height: 106px;
+}
+
+.report-summary-card .card-body,
+.report-summary-card .ibp-card-body,
+.report-summary-card > div {
+  width: 100%;
+}
+
+.report-summary-card .text-muted {
+  text-align: center;
+  margin-bottom: 8px;
+}
+
+.report-summary-card .fs-3 {
+  text-align: center;
+  font-size: 1.15rem !important;
+  font-weight: 700;
+  line-height: 1.15;
+}
+
+/* 4. Positive / negative values */
+.metric-positive {
+  color: #1e88f5 !important;
+  font-weight: 700;
+}
+
+.metric-negative {
+  color: #dc2626 !important;
+  font-weight: 700;
+}
+
+.metric-neutral {
+  color: #20323f !important;
+  font-weight: 700;
+}
+
+/* 5. Half-width tables for simple 2-column tables */
+.table-half-wrap {
+  width: 50%;
+  min-width: 420px;
+  max-width: 760px;
+}
+
+@media (max-width: 992px) {
+  .table-half-wrap {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+  }
+}
+
+/* 6. Better number alignment */
+.report-page .table td.text-end,
+.report-page .table th.text-end,
+.report-download-page .table td.text-end,
+.report-download-page .table th.text-end {
+  text-align: right !important;
+}
+
+/* 7. Slightly tighter KPI summary table */
+.kpi-summary-table tbody th {
+  width: 48%;
+}
+
+/* 8. Optional: keep buttons same height */
+.report-page .ibp-btn-primary,
+.report-page .ibp-btn-dark,
+.report-download-page .ibp-btn-primary,
+.report-download-page .ibp-btn-dark {
+  min-height: 42px;
+}
+
+/* =========================================
+   REPORT PAGE LAYOUT TUNING
+   ========================================= */
+
+/* Equal KPI cards under filters */
+.report-kpi-row {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.report-kpi-row .report-summary-card {
+  width: 100%;
+  min-height: 104px;
+}
+
+.report-kpi-row .report-summary-card .fs-3 {
+  font-size: 1.35rem !important;
+  font-weight: 700;
+}
+
+@media (max-width: 1200px) {
+  .report-kpi-row {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 768px) {
+  .report-kpi-row {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* Left-align value columns when requested */
+.report-value-left td:last-child,
+.report-value-left th:last-child,
+.report-value-left .text-end {
+  text-align: left !important;
+}
+
+/* Width helpers */
+.table-two-fifths {
+  width: 40%;
+  min-width: 420px;
+  max-width: 640px;
+}
+
+.table-two-thirds {
+  width: 66.6667%;
+  min-width: 680px;
+  max-width: 1100px;
+}
+
+@media (max-width: 1200px) {
+  .table-two-fifths,
+  .table-two-thirds {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+  }
+}
+
+/* Change % column left align */
+.change-col-left td:nth-child(4),
+.change-col-left th:nth-child(4) {
+  text-align: left !important;
+}
+
+/* Supporting KPI value column left align */
+.kpi-value-left td:nth-child(2),
+.kpi-value-left th:nth-child(2) {
+  text-align: left !important;
+}
+
+/* ===== VIEW_REPORT FINAL FIXES ===== */
+
+.report-view-page .report-kpi-left {
+  max-width: 480px;
+  flex: 0 0 auto;
+}
+
+.report-view-page .report-kpi-review {
+  max-width: 445px;
+}
+
+.report-view-page .report-kpi-forecast {
+  max-width: 420px;
+}
+
+.report-view-page .report-insight-right {
+  padding-left: 2.75rem;
+}
+
+.report-view-page .report-value-left {
+  table-layout: fixed;
+  width: 100%;
+}
+
+.report-view-page .report-value-left tbody th {
+  width: 43%;
+  white-space: nowrap;
+}
+
+.report-view-page .report-value-left tbody td {
+  width: 57%;
+  text-align: left !important;
+  padding-left: 3rem !important;
+  white-space: nowrap;
+}
+
+.report-view-page #forecast-outlook .report-value-left tbody td {
+  padding-left: 3.25rem !important;
+}
+
+.report-view-page .report-forecast-table {
+  table-layout: fixed;
+  width: 100%;
+}
+
+.report-view-page .report-forecast-table .rf-col-1 { width: 21%; }
+.report-view-page .report-forecast-table .rf-col-2 { width: 27%; }
+.report-view-page .report-forecast-table .rf-col-3 { width: 23%; }
+.report-view-page .report-forecast-table .rf-col-4 { width: 17%; }
+.report-view-page .report-forecast-table .rf-col-5 { width: 12%; }
+
+.report-view-page .report-forecast-table th,
+.report-view-page .report-forecast-table td {
+  white-space: nowrap;
+  text-align: left !important;
+}
+
+.report-view-page #forecast-outlook .table-two-thirds {
+  width: 72%;
+  min-width: 860px;
+  max-width: 1180px;
+}
+
+@media (max-width: 1200px) {
+  .report-view-page #forecast-outlook .table-two-thirds {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+  }
+}
+
+/* Hide the top page title area for report view only */
+.ibp-page-header.report-hidden {
+  display: none !important;
+}
+
+
+/* ===== MINOR VIEW REPORT TUNING ===== */
+
+/* 1) Move Sales KPI Summary values further right into the highlighted box */
+.report-view-page #sales-performance .report-value-left tbody td {
+  padding-left: 5.2rem !important;
+}
+
+/* 2) Move Review KPI Summary values further right into the highlighted box */
+.report-view-page #review-analysis .report-value-left tbody td {
+  padding-left: 5.1rem !important;
+}
+
+/* 3) Crop Review Topics and move Count values further right */
+.report-view-page #review-analysis .col-lg-4 {
+  max-width: 390px;
+}
+
+.report-view-page #review-analysis .col-lg-4 .table-responsive {
+  max-width: 385px;
+}
+
+.report-view-page #review-analysis .col-lg-4 table {
+  table-layout: fixed;
+  width: 100%;
+}
+
+.report-view-page #review-analysis .col-lg-4 table th:first-child,
+.report-view-page #review-analysis .col-lg-4 table td:first-child {
+  width: 68%;
+}
+
+.report-view-page #review-analysis .col-lg-4 table th:last-child,
+.report-view-page #review-analysis .col-lg-4 table td:last-child {
+  width: 32%;
+  text-align: left !important;
+  padding-left: 4.25rem !important;
+  white-space: nowrap;
+}
+
+/* Start Review Summary by Category further right */
+.report-view-page #review-analysis .col-lg-8 {
+  padding-left: 2.9rem;
+}
+
+/* 4) Move Forecast Summary values further right into the highlighted box */
+.report-view-page #forecast-outlook .report-value-left tbody td {
+  padding-left: 5.0rem !important;
+}
+
+/* Keep these tighter boxes visually stable */
+.report-view-page #sales-performance .report-kpi-left {
+  max-width: 485px;
+}
+
+
+
+.report-view-page #review-analysis .report-kpi-left {
+  max-width: 395px;
+}
+
+.report-view-page #forecast-outlook .report-kpi-left {
+  max-width: 395px;
+}
+
+
+/* ===== ALIGN REVIEW KPI + REVIEW TOPICS TO RED BOX ===== */
+
+/* Review KPI Summary: push values a bit more right and keep a stable split */
+.report-view-page #review-analysis .report-value-left {
+  table-layout: fixed;
+  width: 100%;
+}
+
+.report-view-page #review-analysis .report-value-left tbody th {
+  width: 62%;
+  white-space: nowrap;
+}
+
+.report-view-page #review-analysis .report-value-left tbody td {
+  width: 38%;
+  text-align: left !important;
+  padding-left: 2.2rem !important;
+  white-space: nowrap;
+}
+
+/* Review Topics: fixed two-column layout with count aligned inside the red box */
+.report-view-page #review-analysis .col-lg-4 table {
+  table-layout: fixed;
+  width: 100%;
+}
+
+.report-view-page #review-analysis .col-lg-4 table th:first-child,
+.report-view-page #review-analysis .col-lg-4 table td:first-child {
+  width: 72%;
+  white-space: nowrap;
+}
+
+.report-view-page #review-analysis .col-lg-4 table th:last-child,
+.report-view-page #review-analysis .col-lg-4 table td:last-child {
+  width: 28%;
+  text-align: left !important;
+  padding-left: 1.4rem !important;
+  white-space: nowrap;
+}
+
+/* ===== ALIGN SALES TABLE COLUMNS TO THE RED GUIDES ===== */
+
+/* Common fixed layout for the four sales-performance tables */
+.report-view-page #sales-performance .table-striped {
+  table-layout: fixed;
+  width: 100%;
+}
+
+.report-view-page #sales-performance .table-striped th,
+.report-view-page #sales-performance .table-striped td {
+  white-space: nowrap;
+}
+
+/* Top/Lowest revenue tables: Category | Sales | Profit | Orders */
+.report-view-page #sales-performance .row.g-4.mt-1:first-of-type .table-striped th:nth-child(1),
+.report-view-page #sales-performance .row.g-4.mt-1:first-of-type .table-striped td:nth-child(1) {
+  width: 31% !important;
+}
+.report-view-page #sales-performance .row.g-4.mt-1:first-of-type .table-striped th:nth-child(2),
+.report-view-page #sales-performance .row.g-4.mt-1:first-of-type .table-striped td:nth-child(2) {
+  width: 23% !important;
+}
+.report-view-page #sales-performance .row.g-4.mt-1:first-of-type .table-striped th:nth-child(3),
+.report-view-page #sales-performance .row.g-4.mt-1:first-of-type .table-striped td:nth-child(3) {
+  width: 27% !important;
+  padding-left: 1.1rem !important;
+}
+.report-view-page #sales-performance .row.g-4.mt-1:first-of-type .table-striped th:nth-child(4),
+.report-view-page #sales-performance .row.g-4.mt-1:first-of-type .table-striped td:nth-child(4) {
+  width: 19% !important;
+}
+
+/* Fastest/Slowest tables: Category | Sales Growth | Profit Growth | Trend */
+.report-view-page #sales-performance .row.g-4.mt-1:last-of-type .table-striped th:nth-child(1),
+.report-view-page #sales-performance .row.g-4.mt-1:last-of-type .table-striped td:nth-child(1) {
+  width: 31% !important;
+}
+.report-view-page #sales-performance .row.g-4.mt-1:last-of-type .table-striped th:nth-child(2),
+.report-view-page #sales-performance .row.g-4.mt-1:last-of-type .table-striped td:nth-child(2) {
+  width: 23% !important;
+}
+.report-view-page #sales-performance .row.g-4.mt-1:last-of-type .table-striped th:nth-child(3),
+.report-view-page #sales-performance .row.g-4.mt-1:last-of-type .table-striped td:nth-child(3) {
+  width: 27%;
+  padding-left: 1.1rem !important;
+}
+.report-view-page #sales-performance .row.g-4.mt-1:last-of-type .table-striped th:nth-child(4),
+.report-view-page #sales-performance .row.g-4.mt-1:last-of-type .table-striped td:nth-child(4) {
+  width: 19% !important;
+}
+
+
+/* ===== HARD OVERRIDES FOR VIEW REPORT ALIGNMENT ===== */
+
+.report-view-page #review-analysis .report-kpi-review .table tbody th,
+.report-view-page #review-analysis .report-kpi-review .table tbody td {
+  border: none !important;
+  box-shadow: none !important;
+  background: rgba(0, 0, 0, 0.03) !important;
+  white-space: nowrap;
+}
+
+.report-view-page #review-analysis .report-kpi-review .table {
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+  table-layout: fixed !important;
+  width: 88% !important;
+}
+
+/* Review KPI values */
+
+.report-view-page #review-analysis .report-kpi-review .report-value-left tbody th {
+  width: 66% !important;
+  white-space: nowrap !important;
+}
+
+.report-view-page #review-analysis .report-kpi-review .report-value-left tbody td {
+  width: 34% !important;
+  text-align: left !important;
+  padding-left: 0.7rem !important;
+  white-space: nowrap !important;
+}
+
+/* Review Topics crop + value alignment */
+.report-view-page #review-analysis .review-topics-col {
+  max-width: 390px !important;
+  flex: 0 0 390px !important;
+}
+.report-view-page #review-analysis .review-topics-wrap {
+  max-width: 390px !important;
+}
+.report-view-page #review-analysis .review-topics-table {
+  table-layout: fixed !important;
+  width: 100% !important;
+}
+.report-view-page #review-analysis .review-topics-table th:nth-child(1),
+.report-view-page #review-analysis .review-topics-table td:nth-child(1) {
+  width: 72% !important;
+}
+.report-view-page #review-analysis .review-topics-table th:nth-child(2),
+.report-view-page #review-analysis .review-topics-table td:nth-child(2) {
+  width: 28% !important;
+  text-align: left !important;
+  padding-left: 0.75rem !important;
+  white-space: nowrap !important;
+}
+
+/* Review Summary starts further right */
+.report-view-page #review-analysis .review-summary-col {
+  padding-left: 2.75rem !important;
+}
+
+/* Sales KPI values */
+.report-view-page #sales-performance .report-kpi-sales .report-value-left {
+  table-layout: fixed !important;
+  width: 100% !important;
+}
+
+.report-view-page #sales-performance .report-kpi-sales .report-value-left tbody th {
+  width: 60% !important;
+  white-space: nowrap !important;
+}
+.report-view-page #sales-performance .report-kpi-sales .report-value-left tbody td {
+  width: 40% !important;
+  text-align: left !important;
+  padding-left: 0.9rem !important;
+  white-space: nowrap !important;
+}
+
+.report-view-page #sales-performance .report-kpi-sales .table tbody th,
+.report-view-page #sales-performance .report-kpi-sales .table tbody td {
+  border: none !important;
+  box-shadow: none !important;
+}
+
+
+
+
+
+/* Forecast KPI values */
+.report-view-page #forecast-outlook .report-kpi-forecast .report-value-left tbody th {
+  width: 56% !important;
+}
+.report-view-page #forecast-outlook .report-kpi-forecast .report-value-left tbody td {
+  width: 44% !important;
+  padding-left: 1rem !important;
+  text-align: left !important;
+}
+
+/* Sales 4 tables aligned by explicit column widths */
+.report-view-page #sales-performance .sales-revenue-table,
+.report-view-page #sales-performance .sales-growth-table {
+  table-layout: fixed !important;
+  width: 100% !important;
+}
+.report-view-page #sales-performance .sales-revenue-table th,
+.report-view-page #sales-performance .sales-revenue-table td,
+.report-view-page #sales-performance .sales-growth-table th,
+.report-view-page #sales-performance .sales-growth-table td {
+  white-space: nowrap !important;
+  text-align: left !important;
+}
+
+/* Revenue tables: Category | Sales | Profit | Orders */
+.report-view-page #sales-performance .sales-revenue-table th:nth-child(1),
+.report-view-page #sales-performance .sales-revenue-table td:nth-child(1) { width: 31% !important; }
+.report-view-page #sales-performance .sales-revenue-table th:nth-child(2),
+.report-view-page #sales-performance .sales-revenue-table td:nth-child(2) { width: 21% !important; }
+.report-view-page #sales-performance .sales-revenue-table th:nth-child(3),
+.report-view-page #sales-performance .sales-revenue-table td:nth-child(3) { width: 27% !important; }
+.report-view-page #sales-performance .sales-revenue-table th:nth-child(4),
+.report-view-page #sales-performance .sales-revenue-table td:nth-child(4) { width: 21% !important; }
+
+/* Growth tables: Category | Sales Growth | Profit Growth | Trend */
+.report-view-page #sales-performance .sales-growth-table th:nth-child(1),
+.report-view-page #sales-performance .sales-growth-table td:nth-child(1) { width: 31% !important; }
+.report-view-page #sales-performance .sales-growth-table th:nth-child(2),
+.report-view-page #sales-performance .sales-growth-table td:nth-child(2) { width: 27% !important; }
+.report-view-page #sales-performance .sales-growth-table th:nth-child(3),
+.report-view-page #sales-performance .sales-growth-table td:nth-child(3) { width: 27% !important; }
+.report-view-page #sales-performance .sales-growth-table th:nth-child(4),
+.report-view-page #sales-performance .sales-growth-table td:nth-child(4) { width: 15% !important; }
+
+
+/* =========================================
+   FINAL FIX - FORECAST OUTLOOK
+   based on existing original CSS hooks
+   ========================================= */
+
+/* 1) Forecast Summary: remove inner borders and match Sales KPI feel */
+.report-view-page #forecast-outlook .report-kpi-forecast .report-value-left {
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+  table-layout: fixed !important;
+  width: 88% !important;
+  overflow: hidden !important;
+  border-radius: 10px !important;
+}
+
+.report-view-page #forecast-outlook .report-kpi-forecast .report-value-left tbody th,
+.report-view-page #forecast-outlook .report-kpi-forecast .report-value-left tbody td {
+  border: none !important;
+  box-shadow: none !important;
+  background: rgba(0, 0, 0, 0.03) !important;
+  white-space: nowrap !important;
+}
+
+/* keep the label/value split compact */
+.report-view-page #forecast-outlook .report-kpi-forecast .report-value-left tbody th {
+  width: 56% !important;
+  color: #20323f !important;
+  font-weight: 700 !important;
+  text-align: left !important;
+}
+
+.report-view-page #forecast-outlook .report-kpi-forecast .report-value-left tbody td {
+  width: 44% !important;
+  text-align: left !important;
+  padding-left: 1rem !important;
+}
+
+/* rounded outer corners */
+.report-view-page #forecast-outlook .report-kpi-forecast .report-value-left tbody tr:first-child th {
+  border-top-left-radius: 10px !important;
+}
+.report-view-page #forecast-outlook .report-kpi-forecast .report-value-left tbody tr:first-child td {
+  border-top-right-radius: 10px !important;
+}
+.report-view-page #forecast-outlook .report-kpi-forecast .report-value-left tbody tr:last-child th {
+  border-bottom-left-radius: 10px !important;
+}
+.report-view-page #forecast-outlook .report-kpi-forecast .report-value-left tbody tr:last-child td {
+  border-bottom-right-radius: 10px !important;
+}
+
+/* 2) Forecast tables: use the real existing table class */
+.report-view-page #forecast-outlook .report-forecast-table {
+  table-layout: fixed !important;
+  width: 100% !important;
+}
+
+.report-view-page #forecast-outlook .report-forecast-table th,
+.report-view-page #forecast-outlook .report-forecast-table td {
+  text-align: left !important;
+  white-space: nowrap !important;
+  padding-left: 12px !important;
+  padding-right: 10px !important;
+}
+
+/* 3) Align columns to the red guides */
+.report-view-page #forecast-outlook .report-forecast-table .rf-col-1,
+.report-view-page #forecast-outlook .report-forecast-table th:nth-child(1),
+.report-view-page #forecast-outlook .report-forecast-table td:nth-child(1) {
+  width: 26% !important;   /* Category */
+}
+
+.report-view-page #forecast-outlook .report-forecast-table .rf-col-2,
+.report-view-page #forecast-outlook .report-forecast-table th:nth-child(2),
+.report-view-page #forecast-outlook .report-forecast-table td:nth-child(2) {
+  width: 21% !important;   /* Current Sales / Current Transactions */
+}
+
+.report-view-page #forecast-outlook .report-forecast-table .rf-col-3,
+.report-view-page #forecast-outlook .report-forecast-table th:nth-child(3),
+.report-view-page #forecast-outlook .report-forecast-table td:nth-child(3) {
+  width: 23% !important;   /* Forecast Sales / Forecast Transactions */
+}
+
+.report-view-page #forecast-outlook .report-forecast-table .rf-col-4,
+.report-view-page #forecast-outlook .report-forecast-table th:nth-child(4),
+.report-view-page #forecast-outlook .report-forecast-table td:nth-child(4) {
+  width: 17% !important;   /* Change % */
+}
+
+.report-view-page #forecast-outlook .report-forecast-table .rf-col-5,
+.report-view-page #forecast-outlook .report-forecast-table th:nth-child(5),
+.report-view-page #forecast-outlook .report-forecast-table td:nth-child(5) {
+  width: 13% !important;   /* Trend */
+}
+
+/* make col starts clearer */
+.report-view-page #forecast-outlook .report-forecast-table th:nth-child(2),
+.report-view-page #forecast-outlook .report-forecast-table td:nth-child(2),
+.report-view-page #forecast-outlook .report-forecast-table th:nth-child(3),
+.report-view-page #forecast-outlook .report-forecast-table td:nth-child(3),
+.report-view-page #forecast-outlook .report-forecast-table th:nth-child(4),
+.report-view-page #forecast-outlook .report-forecast-table td:nth-child(4),
+.report-view-page #forecast-outlook .report-forecast-table th:nth-child(5),
+.report-view-page #forecast-outlook .report-forecast-table td:nth-child(5) {
+  padding-left: 14px !important;
+}
+
+/* --------Download---------- */
+
+/* =========================================
+   REPORT DOWNLOAD PAGE - HALF WIDTH SUMMARY TABLES
+   ========================================= */
+
+.report-download-page .table-download-half {
+  width: 50%;
+  min-width: 430px;
+  max-width: 760px;
+}
+
+.report-download-page .table-download-half table {
+  width: 100%;
+  table-layout: fixed;
+}
+
+/* shared 2-column alignment for:
+   2.1 KPI Summary
+   3.1 Review KPI Summary
+   3.2 Review Topics
+   5.1 Forecast Summary
+*/
+.report-download-page .table-download-half .kpi-summary-table,
+.report-download-page .table-download-half .report-topics-half {
+  width: 100%;
+  table-layout: fixed;
+}
+
+.report-download-page .table-download-half .kpi-summary-table th:first-child,
+.report-download-page .table-download-half .kpi-summary-table td:first-child,
+.report-download-page .table-download-half .report-topics-half th:first-child,
+.report-download-page .table-download-half .report-topics-half td:first-child {
+  width: 58%;
+}
+
+.report-download-page .table-download-half .kpi-summary-table th:last-child,
+.report-download-page .table-download-half .kpi-summary-table td:last-child,
+.report-download-page .table-download-half .report-topics-half th:last-child,
+.report-download-page .table-download-half .report-topics-half td:last-child {
+  width: 42%;
+}
+
+/* align all second-column values consistently */
+.report-download-page .report-value-left tbody td,
+.report-download-page .report-topics-half tbody td:last-child {
+  text-align: left !important;
+  padding-left: 1.25rem !important;
+  white-space: nowrap;
+  vertical-align: middle !important;
+}
+
+/* keep first column neat */
+.report-download-page .report-value-left tbody th,
+.report-download-page .report-topics-half tbody td:first-child,
+.report-download-page .report-topics-half thead th:first-child,
+.report-download-page .report-topics-half thead th:last-child {
+  white-space: nowrap;
+  vertical-align: middle !important;
+}
+
+/* keep growth rows left aligned */
+.report-download-page .report-value-left tbody tr.left-growth-row td {
+  text-align: left !important;
+  padding-left: 1.25rem !important;
+}
+
+/* other half-width category tables */
+.report-download-page .table-download-half th,
+.report-download-page .table-download-half td {
+  vertical-align: middle;
+}
+
+/* optional: make header text alignment consistent */
+.report-download-page .kpi-summary-table thead th,
+.report-download-page .report-topics-half thead th {
+  text-align: left;
+}
+
+/* responsive */
+@media (max-width: 1200px) {
+  .report-download-page .table-download-half {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  .report-download-page .report-value-left tbody td,
+  .report-download-page .report-topics-half tbody td:last-child {
+    padding-left: 0.75rem !important;
+    white-space: normal;
+  }
+}
+
+/* --------REVIEW BY topic---------- */
+/* =========================================
+   REVIEW BY TOPIC - CHART + TABLE LAYOUT
+   ========================================= */
+
+.reviews-topic-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.reviews-topic-row {
+    display: grid;
+    grid-template-columns: 0.68fr 0.32fr;
+    gap: 16px;
+    align-items: stretch;
+}
+
+.reviews-topic-chart-card .card-body,
+.reviews-topic-table-card .card-body {
+    padding: 10px 12px 8px;
+}
+
+.reviews-topic-chart-card {
+    min-width: 0;
+}
+
+.reviews-topic-table-card {
+    min-width: 0;
+}
+
+.reviews-topic-table-card {
+    padding: 0;
+}
+
+.reviews-topic-table-wrap {
+    height: 280px;
+    padding-right: 4px;
+}
+
+.reviews-topic-canvas-wrap {
+    position: relative;
+    height: 280px;
+}
+
+.reviews-topic-canvas-wrap canvas {
+    width: 100% !important;
+    height: 280px !important;
+}
+
+.reviews-topic-table-wrap {
+    height: 320px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.reviews-topic-data-table {
+    font-size: 0.93rem;
+    table-layout: fixed;
+    width: 100%;
+}
+
+.reviews-topic-data-table thead th:first-child,
+.reviews-topic-data-table tbody td:first-child,
+.reviews-topic-data-table tfoot th:first-child {
+    width: 62%;
+}
+
+.reviews-topic-data-table thead th:last-child,
+.reviews-topic-data-table tbody td:last-child,
+.reviews-topic-data-table tfoot th:last-child {
+    width: 38%;
+}
+
+.reviews-topic-data-table thead th {
+    position: sticky;
+    top: 0;
+    background: #f7f7f7;
+    z-index: 2;
+}
+
+.reviews-topic-data-table tfoot th,
+.reviews-topic-data-table tfoot td {
+    position: sticky;
+    bottom: 0;
+    background: #f7f7f7;
+    z-index: 2;
+    font-weight: 800;
+}
+
+.reviews-topic-data-table td,
+.reviews-topic-data-table th {
+    padding: 6px 10px;
+}
+
+@media (max-width: 1200px) {
+    .reviews-topic-row {
+        grid-template-columns: 1fr;
+    }
+
+    .reviews-topic-canvas-wrap,
+    .reviews-topic-canvas-wrap canvas,
+    .reviews-topic-table-wrap {
+        height: 300px !important;
+    }
+}
+
+@media (max-width: 768px) {
+    .reviews-topic-canvas-wrap,
+    .reviews-topic-canvas-wrap canvas,
+    .reviews-topic-table-wrap {
+        height: 260px !important;
+    }
+}

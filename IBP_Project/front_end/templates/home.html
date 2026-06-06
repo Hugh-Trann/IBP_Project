@@ -1,0 +1,143 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="ibp-panel">
+  <div class="home-dashboard-grid">
+    <div class="home-main-left">
+      <div class="card shadow-sm border-0 dashboard-card mb-4">
+        <div class="card-body">
+          <h2 class="home-section-title">Sales Performance By Year</h2>
+          <canvas id="salesPerformanceChart" height="110"></canvas>
+        </div>
+      </div>
+
+      <div class="home-summary-row">
+        <div class="card shadow-sm border-0 dashboard-card summary-card">
+          <div class="card-body">
+            <h3 class="home-section-title center">Total Revenue</h3>
+            <div class="table-responsive">
+              <table class="table table-sm home-summary-table mb-0">
+                <thead>
+                  <tr>
+                    <th>Year</th>
+                    <th class="text-end">Revenue</th>
+                  </tr>
+                </thead>
+                <tbody id="revenueTableBody"></tbody>
+                <tfoot>
+                  <tr>
+                    <th>Total</th>
+                    <th class="text-end" id="revenueTotal">0</th>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="card shadow-sm border-0 dashboard-card summary-card">
+          <div class="card-body">
+            <h3 class="home-section-title center">Total Profit</h3>
+            <div class="table-responsive">
+              <table class="table table-sm home-summary-table mb-0">
+                <thead>
+                  <tr>
+                    <th>Year</th>
+                    <th class="text-end">Profit</th>
+                  </tr>
+                </thead>
+                <tbody id="profitTableBody"></tbody>
+                <tfoot>
+                  <tr>
+                    <th>Total</th>
+                    <th class="text-end" id="profitTotal">0</th>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <div class="card shadow-sm border-0 dashboard-card summary-card">
+          <div class="card-body">
+            <h3 class="home-section-title center">Profit Margin</h3>
+            <div class="table-responsive">
+              <table class="table table-sm home-summary-table mb-0">
+                <thead>
+                  <tr>
+                    <th>Year</th>
+                    <th class="text-end">%</th>
+                  </tr>
+                </thead>
+                <tbody id="marginTableBody"></tbody>
+                <tfoot>
+                  <tr>
+                    <th>Total</th>
+                    <th class="text-end" id="marginTotal">0%</th>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="home-right-panel">
+      <div class="card shadow-sm border-0 dashboard-card side-card mb-4">
+        <div class="card-body">
+          <h2 class="home-section-title">Top Profit</h2>
+          <div class="table-responsive side-table-wrap">
+            <table class="table table-sm home-side-table mb-0">
+              <thead>
+                <tr>
+                  <th>Product ID</th>
+                  <th class="text-end">Profit</th>
+                </tr>
+              </thead>
+              <tbody id="topProfitBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="card shadow-sm border-0 dashboard-card side-card mb-4">
+        <div class="card-body">
+          <h2 class="home-section-title">Top Best Sellers</h2>
+          <div class="table-responsive side-table-wrap">
+            <table class="table table-sm home-side-table mb-0">
+              <thead>
+                <tr>
+                  <th>Product ID</th>
+                  <th class="text-end">No.Transactions</th>
+                </tr>
+              </thead>
+              <tbody id="topBestSellersBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="card shadow-sm border-0 dashboard-card side-card">
+        <div class="card-body">
+          <h2 class="home-section-title">Top Customers</h2>
+          <div class="table-responsive side-table-wrap">
+            <table class="table table-sm home-side-table mb-0">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th class="text-end">No.Transactions</th>
+                </tr>
+              </thead>
+              <tbody id="topCustomersBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="/static/home_dashboard.js"></script>
+{% endblock %}

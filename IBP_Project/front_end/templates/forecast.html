@@ -1,0 +1,153 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="forecast-panel">
+    <div class="forecast-native-layout">
+        <!-- Left side -->
+        <div class="forecast-filter-panel">
+            <!-- Forecast year container -->
+            <div class="card shadow-sm border-0 dashboard-card forecast-year-card">
+                <div class="card-body">
+                    <div class="forecast-year-label">Forecast Year</div>
+                    <div id="forecastYearDisplay" class="forecast-year-value">-</div>
+                </div>
+            </div>
+
+            <!-- Filters -->
+            <div class="card shadow-sm border-0 dashboard-card forecast-filter-card">
+                <div class="card-body forecast-filter-card-body">
+                    <h3 class="forecast-panel-title">Filters</h3>
+
+                    <div class="forecast-filter-group">
+                        <div class="forecast-filter-header">
+                            <span>Month</span>
+                        </div>
+                        <div id="forecastMonthFilters" class="forecast-filter-list"></div>
+                    </div>
+
+                    <div class="forecast-filter-group">
+                        <div class="forecast-filter-header">
+                            <span>Category</span>
+                        </div>
+                        <div id="forecastCategoryFilters" class="forecast-filter-list"></div>
+                    </div>
+
+                    <div class="forecast-filter-actions">
+                        <button id="forecastApplyBtn" class="ibp-btn-primary" type="button">Apply</button>
+                        <button id="forecastResetBtn" class="ibp-btn-dark" type="button">Reset</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right content -->
+        <div class="forecast-content-panel">
+            <div class="forecast-tab-bar">
+                <button id="tabSalesForecastBtn" class="forecast-tab-btn active" type="button">Sales Forecast</button>
+                <button id="tabCategoryForecastBtn" class="forecast-tab-btn" type="button">Transactions Forecast</button>
+            </div>
+
+            <!-- Sales Forecast -->
+            <div id="salesForecastTabContent" class="forecast-tab-content active">
+                <div class="forecast-panel-spacing">
+                    <div class="forecast-sales-layout sales-forecast-layout">
+                        <div class="card shadow-sm border-0 dashboard-card forecast-chart-card">
+                            <div class="card-body">
+                                <h3 class="forecast-section-title">Sales Forecast</h3>
+                                <canvas id="salesForecastChart"></canvas>
+                            </div>
+                        </div>
+
+                        <div class="card shadow-sm border-0 dashboard-card forecast-table-card forecast-table-card-sales">
+                            <div class="card-body">
+                                <h3 class="forecast-table-title">Forecast Table</h3>
+                                <div class="table-responsive">
+                                    <table class="table table-sm forecast-data-table mb-0">
+                                        <thead>
+                                            <tr>
+                                                <th>Month</th>
+                                                <th class="text-end">Total Sales</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="salesForecastTableBody"></tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <th>Total</th>
+                                                <th class="text-end" id="salesForecastTableTotal">0</th>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card shadow-sm border-0 dashboard-card forecast-pie-card">
+                        <div class="card-body">
+                            <h3 class="forecast-section-title">Sales Forecast by Category</h3>
+                            <div class="forecast-pie-layout">
+                                <div class="forecast-pie-canvas-wrap">
+                                    <canvas id="salesForecastCategoryPieChart"></canvas>
+                                </div>
+                                <div id="salesForecastCategoryLegend" class="forecast-chart-legend"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Category Forecast -->
+            <div id="categoryForecastTabContent" class="forecast-tab-content">
+                <div class="forecast-panel-spacing">
+                    <div class="forecast-sales-layout transaction-forecast-layout">
+                        <div class="card shadow-sm border-0 dashboard-card forecast-chart-card">
+                            <div class="card-body">
+                                <h3 class="forecast-section-title">Transaction Forecast by Category</h3>
+                                <canvas id="categoryForecastChart"></canvas>
+                            </div>
+                        </div>
+
+                        <div class="card shadow-sm border-0 dashboard-card forecast-table-card forecast-table-card-transaction">
+                            <div class="card-body">
+                                <h3 class="forecast-table-title">Transaction Forecast Table</h3>
+                                <div class="table-responsive">
+                                    <table class="table table-sm forecast-data-table mb-0">
+                                        <thead>
+                                            <tr>
+                                                <th>Category</th>
+                                                <th class="text-end">Forecast Transactions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="categoryForecastTableBody"></tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <th>Total</th>
+                                                <th class="text-end" id="categoryForecastTableTotal">0</th>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card shadow-sm border-0 dashboard-card forecast-pie-card">
+                        <div class="card-body">
+                            <h3 class="forecast-section-title">Transaction Forecast Share by Category</h3>
+                            <div class="forecast-pie-layout">
+                                <div class="forecast-pie-canvas-wrap">
+                                    <canvas id="categoryForecastPieChart"></canvas>
+                                </div>
+                                <div id="categoryForecastPieLegend" class="forecast-chart-legend"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="/static/forecast_dashboard.js"></script>
+{% endblock %}

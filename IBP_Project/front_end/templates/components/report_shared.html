@@ -1,0 +1,244 @@
+{% macro metric_value(value, kind="number") -%}
+    {%- if kind == "currency" -%}
+        {{ "{:,.2f}".format(value|default(0)) }}
+    {%- elif kind == "int" -%}
+        {{ "{:,}".format((value|default(0))|int) }}
+    {%- elif kind == "float2" -%}
+        {{ "{:,.2f}".format(value|default(0)) }}
+    {%- else -%}
+        {{ value|default("") }}
+    {%- endif -%}
+{%- endmacro %}
+
+{% macro percent_value(v) -%}
+    {%- set p = v|default(0) -%}
+    {%- if p > 0 -%}
+        <span class="metric-positive">+{{ "{:,.2f}".format(p) }}%</span>
+    {%- elif p < 0 -%}
+        <span class="metric-negative">({{ "{:,.2f}".format(p|abs) }}%)</span>
+    {%- else -%}
+        <span class="metric-neutral">{{ "{:,.2f}".format(p) }}%</span>
+    {%- endif -%}
+{%- endmacro %}
+
+{% macro sales_kpi_table(report_data) -%}
+<div class="table-responsive table-two-fifths mb-4">
+    <table class="table table-bordered table-sm align-middle report-value-left">
+        <tbody>
+            <tr>
+                <th>Total Sales</th>
+                <td>{{ metric_value(report_data.sales_section.kpis.total_sales, "currency") }}</td>
+            </tr>
+            <tr>
+                <th>Total Profit</th>
+                <td>{{ metric_value(report_data.sales_section.kpis.total_profit, "currency") }}</td>
+            </tr>
+            <tr>
+                <th>Total Transactions</th>
+                <td>{{ metric_value(report_data.sales_section.kpis.total_orders, "int") }}</td>
+            </tr>
+            <tr>
+                <th>Average Order Value</th>
+                <td>{{ metric_value(report_data.sales_section.kpis.avg_order_value, "currency") }}</td>
+            </tr>
+            <tr>
+                <th>Sales Growth</th>
+                <td class="text-end">{{ percent_value(report_data.sales_section.kpis.sales_growth_pct) }}</td>
+            </tr>
+            <tr>
+                <th>Profit Growth</th>
+                <td class="text-end">{{ percent_value(report_data.sales_section.kpis.profit_growth_pct) }}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+{%- endmacro %}
+
+{% macro review_kpi_table(report_data) -%}
+<div class="table-responsive table-two-fifths mb-4">
+    <table class="table table-bordered table-sm align-middle report-value-left">
+        <tbody>
+            <tr>
+                <th>Total Reviews</th>
+                <td>{{ metric_value(report_data.review_section.kpis.total_reviews, "int") }}</td>
+            </tr>
+            <tr>
+                <th>Average Review Score</th>
+                <td>{{ metric_value(report_data.review_section.kpis.avg_review_score, "float2") }}</td>
+            </tr>
+            <tr>
+                <th>Average Sentiment Score</th>
+                <td>{{ metric_value(report_data.review_section.kpis.avg_sentiment_score, "float2") }}</td>
+            </tr>
+            <tr>
+                <th>Positive Reviews</th>
+                <td>{{ metric_value(report_data.review_section.kpis.positive_reviews, "int") }}</td>
+            </tr>
+            <tr>
+                <th>Neutral Reviews</th>
+                <td>{{ metric_value(report_data.review_section.kpis.neutral_reviews, "int") }}</td>
+            </tr>
+            <tr>
+                <th>Negative Reviews</th>
+                <td>{{ metric_value(report_data.review_section.kpis.negative_reviews, "int") }}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+{%- endmacro %}
+
+{% macro forecast_summary_table(report_data) -%}
+<div class="table-responsive table-two-fifths mb-4">
+    <table class="table table-bordered table-sm align-middle report-value-left">
+        <tbody>
+            <tr>
+                <th>Forecast Period</th>
+                <td>{{ report_data.forecast_section.summary.forecast_period|default("N/A") }}</td>
+            </tr>
+            <tr>
+                <th>Forecast Sales</th>
+                <td>{{ metric_value(report_data.forecast_section.summary.forecast_sales, "currency") }}</td>
+            </tr>
+            <tr>
+                <th>Forecast Transactions</th>
+                <td>{{ metric_value(report_data.forecast_section.summary.forecast_orders, "int") }}</td>
+            </tr>
+            <tr>
+                <th>Forecast Growth</th>
+                <td class="text-end">{{ percent_value(report_data.forecast_section.summary.forecast_growth_pct) }}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+{%- endmacro %}
+
+{% macro recommendation_table(rows) -%}
+<div class="table-responsive">
+    <table class="table table-bordered table-sm align-middle">
+        <thead>
+            <tr>
+                <th>Priority</th>
+                <th>Category</th>
+                <th>Issue / Opportunity</th>
+                <th>Recommended Action</th>
+                <th>Expected Benefit</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in rows %}
+            <tr>
+                <td>{{ row.priority }}</td>
+                <td>{{ row.category }}</td>
+                <td>{{ row.issue_or_opportunity }}</td>
+                <td>{{ row.recommended_action }}</td>
+                <td>{{ row.expected_benefit }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{%- endmacro %}
+
+{% macro review_topics_table(rows) -%}
+<div class="table-responsive table-two-fifths mb-4">
+    <table class="table table-bordered table-sm align-middle">
+        <thead>
+            <tr>
+                <th>Topic</th>
+                <th>Count</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in rows %}
+            <tr>
+                <td>{{ row.topic }}</td>
+                <td>{{ metric_value(row.count, "int") }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{%- endmacro %}
+
+{% macro review_category_summary_table(rows) -%}
+<div class="table-responsive mb-4">
+    <table class="table table-bordered table-sm align-middle">
+        <thead>
+            <tr>
+                <th>Category</th>
+                <th>Avg Score</th>
+                <th>Sentiment</th>
+                <th>Total Reviews</th>
+                <th>Dominant Topic</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in rows %}
+            <tr>
+                <td>{{ row.category }}</td>
+                <td>{{ metric_value(row.avg_review_score, "float2") }}</td>
+                <td>{{ metric_value(row.avg_sentiment_score, "float2") }}</td>
+                <td>{{ metric_value(row.total_reviews, "int") }}</td>
+                <td>{{ row.dominant_topic }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{%- endmacro %}
+
+{% macro category_sales_forecast_table(rows, title="Forecast by Category") -%}
+<h5 class="fw-bold mb-3">{{ title }}</h5>
+<div class="table-responsive table-two-thirds mb-4">
+    <table class="table table-bordered table-sm align-middle change-col-left">
+        <thead>
+            <tr>
+                <th>Category</th>
+                <th>Current Sales</th>
+                <th>Forecast Sales</th>
+                <th>Change %</th>
+                <th>Trend</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in rows %}
+            <tr>
+                <td>{{ row.category }}</td>
+                <td>{{ metric_value(row.current_sales, "currency") }}</td>
+                <td>{{ metric_value(row.forecast_sales, "currency") }}</td>
+                <td>{{ percent_value(row.forecast_change_pct) }}</td>
+                <td>{{ row.trend }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{%- endmacro %}
+
+{% macro category_transaction_forecast_table(rows, title="Product Forecast Transactions") -%}
+<h6 class="fw-bold mb-3">{{ title }}</h6>
+<div class="table-responsive table-two-thirds mb-4">
+    <table class="table table-bordered table-sm align-middle change-col-left">
+        <thead>
+            <tr>
+                <th>Category</th>
+                <th>Current Transactions</th>
+                <th>Forecast Transactions</th>
+                <th>Change %</th>
+                <th>Trend</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in rows %}
+            <tr>
+                <td>{{ row.category }}</td>
+                <td>{{ metric_value(row.current_transactions, "int") }}</td>
+                <td>{{ metric_value(row.forecast_transactions, "int") }}</td>
+                <td>{{ percent_value(row.forecast_change_pct) }}</td>
+                <td>{{ row.trend }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{%- endmacro %}

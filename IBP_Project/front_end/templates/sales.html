@@ -1,0 +1,321 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="ibp-panel">
+    <div id="salesNativeLayout" class="sales-native-layout">
+        <!-- Left filters -->
+        <div id="salesFilterPanel" class="sales-filter-panel">
+            <div class="card shadow-sm border-0 dashboard-card">
+                <div class="card-body">
+                    <h3 class="sales-panel-title">Filters</h3>
+
+                    <div class="sales-filter-group">
+                        <div class="sales-filter-header">
+                            <span>Year</span>
+                        </div>
+                        <div id="salesYearFilters" class="sales-filter-list"></div>
+                    </div>
+
+                    <div class="sales-filter-group">
+                        <div class="sales-filter-header">
+                            <span>Month</span>
+                        </div>
+                        <div id="salesMonthFilters" class="sales-filter-list"></div>
+                    </div>
+
+                    <div id="salesDayFilterGroup" class="sales-filter-group">
+                        <div class="sales-filter-header">
+                            <span>Day</span>
+                        </div>
+                        <div id="salesDayFilters" class="sales-day-grid"></div>
+                    </div>
+
+                    <div class="sales-filter-actions">
+                        <button id="salesApplyBtn" class="ibp-btn-primary" type="button">Apply</button>
+                        <button id="salesResetBtn" class="ibp-btn-dark" type="button">Reset</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right content -->
+        <div class="sales-content-panel">
+            <div class="sales-tab-bar">
+                <button id="tabDailyBtn" class="sales-tab-btn active" type="button">Daily</button>
+                <button id="tabMonthlyBtn" class="sales-tab-btn" type="button">Monthly</button>
+                <button id="tabComparisonBtn" class="sales-tab-btn" type="button">Comparison</button>
+            </div>
+
+            <!-- Daily tab -->
+            <div id="dailyTabContent" class="sales-tab-content active">
+                <div class="sales-daily-top">
+                    <div class="card shadow-sm border-0 dashboard-card sales-summary-card">
+                        <div class="card-body">
+                            <h3 class="sales-section-title">Summary Sales of A Day</h3>
+                            <div class="sales-subtitle">Category-level sales, profit, and transaction overview</div>
+
+                            <div class="table-responsive">
+                                <table class="table table-sm sales-data-table mb-0 sales-summary-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Category</th>
+                                            <th class="text-end">Sales</th>
+                                            <th class="text-end">Profit</th>
+                                            <th class="text-end">No. Transactions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="dailySummaryBody"></tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <th>Total</th>
+                                            <th class="text-end" id="dailySummaryTotalSales">0</th>
+                                            <th class="text-end" id="dailySummaryTotalProfit">0</th>
+                                            <th class="text-end" id="dailySummaryTotalTransactions">0</th>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card shadow-sm border-0 dashboard-card sales-kpi-card sales-kpi-card-premium">
+                        <div class="card-body">
+                            <div class="sales-kpi-inner">
+                                <h3 class="sales-kpi-title">Average Transaction Value</h3>
+                                <div id="dailyAvgTransactionValue" class="sales-kpi-value">$0</div>
+                                <div class="sales-kpi-note">
+                                    Average sales value per transaction for the selected period
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="sales-daily-bottom sales-daily-bottom-3">
+                    <div class="card shadow-sm border-0 dashboard-card sales-chart-card">
+                        <div class="card-body">
+                            <h3 class="sales-section-title">Number of Orders by Category</h3>
+                            <div class="sales-subtitle">Distribution of daily transactions by category</div>
+
+                            <div class="sales-pie-layout">
+                                <div class="sales-pie-canvas-wrap">
+                                    <canvas id="dailyOrdersByCategoryChart"></canvas>
+                                </div>
+                                <div id="dailyOrdersLegend" class="sales-chart-legend"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card shadow-sm border-0 dashboard-card sales-chart-card">
+                        <div class="card-body">
+                            <h3 class="sales-section-title">Total Sales by Category</h3>
+                            <div class="sales-subtitle">Revenue contribution by category</div>
+
+                            <div class="sales-pie-layout">
+                                <div class="sales-pie-canvas-wrap">
+                                    <canvas id="dailySalesByCategoryChart"></canvas>
+                                </div>
+                                <div id="dailySalesLegend" class="sales-chart-legend"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card shadow-sm border-0 dashboard-card sales-chart-card">
+                        <div class="card-body">
+                            <h3 class="sales-section-title">Profit by Category</h3>
+                            <div class="sales-subtitle">Profit contribution by category</div>
+
+                            <div class="sales-pie-layout">
+                                <div class="sales-pie-canvas-wrap">
+                                    <canvas id="dailyProfitByCategoryChart"></canvas>
+                                </div>
+                                <div id="dailyProfitLegend" class="sales-chart-legend"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Monthly tab -->
+            <div id="monthlyTabContent" class="sales-tab-content">
+                <div class="sales-monthly-layout">
+                    <div class="sales-monthly-left">
+                        <div class="sales-monthly-top-tables">
+                            <div class="card shadow-sm border-0 dashboard-card">
+                                <div class="card-body">
+                                    <h3 class="sales-section-title">Top Profit</h3>
+                                    <div class="table-responsive">
+                                        <table class="table table-sm sales-data-table mb-0">
+                                            <thead>
+                                                <tr>
+                                                    <th>Product</th>
+                                                    <th class="text-end">Profit</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="monthlyTopProfitBody"></tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card shadow-sm border-0 dashboard-card">
+                                <div class="card-body">
+                                    <h3 class="sales-section-title">Top Best Sellers</h3>
+                                    <div class="table-responsive">
+                                        <table class="table table-sm sales-data-table mb-0">
+                                            <thead>
+                                                <tr>
+                                                    <th>Product</th>
+                                                    <th class="text-end">No.Transactions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="monthlyTopBestSellersBody"></tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="card shadow-sm border-0 dashboard-card">
+                                <div class="card-body">
+                                    <h3 class="sales-section-title">Top Customers</h3>
+                                    <div class="table-responsive">
+                                        <table class="table table-sm sales-data-table mb-0">
+                                            <thead>
+                                                <tr>
+                                                    <th>Name</th>
+                                                    <th class="text-end">No.Transactions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="monthlyTopCustomersBody"></tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="sales-monthly-chart-wrap">
+                            <div class="card shadow-sm border-0 dashboard-card sales-monthly-line-card">
+                                <div class="card-body">
+                                    <h3 class="sales-section-title">Revenue and Profit by Day</h3>
+                                    <div class="sales-monthly-line-wrap">
+                                        <canvas id="monthlyRevenueProfitByDayChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="sales-monthly-kpis">
+                        <div class="card shadow-sm border-0 dashboard-card sales-kpi-pill-card">
+                            <div class="card-body">
+                                <div class="sales-kpi-pill-title">Total Revenue</div>
+                                <div id="monthlyTotalRevenue" class="sales-kpi-pill-value">$0</div>
+                            </div>
+                        </div>
+
+                        <div class="card shadow-sm border-0 dashboard-card sales-kpi-pill-card">
+                            <div class="card-body">
+                                <div class="sales-kpi-pill-title">Total Profit</div>
+                                <div id="monthlyTotalProfit" class="sales-kpi-pill-value">$0</div>
+                            </div>
+                        </div>
+
+                        <div class="card shadow-sm border-0 dashboard-card sales-kpi-pill-card">
+                            <div class="card-body">
+                                <div class="sales-kpi-pill-title">Profit Margin %</div>
+                                <div id="monthlyProfitMargin" class="sales-kpi-pill-value">0</div>
+                            </div>
+                        </div>
+
+                        <div class="card shadow-sm border-0 dashboard-card sales-kpi-pill-card">
+                            <div class="card-body">
+                                <div class="sales-kpi-pill-title">Customer Visit</div>
+                                <div id="monthlyCustomerVisit" class="sales-kpi-pill-value">0</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Comparison tab -->
+            <div id="comparisonTabContent" class="sales-tab-content">
+                <div class="sales-comparison-layout">
+                    <div class="card shadow-sm border-0 dashboard-card sales-comparison-control-card">
+                        <div class="card-body">
+                            <div class="sales-comparison-header-row">
+                                <div>
+                                    <h3 class="sales-section-title mb-1">Sales Comparison</h3>
+                                    <div class="sales-subtitle mb-0">
+                                        Compare year-to-year or compare any 2 months, including 2 different years.
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="sales-comparison-form-grid">
+                                <div class="sales-compare-field">
+                                    <label class="sales-compare-label" for="compareMode">Comparison Type</label>
+                                    <select id="compareMode" class="form-select sales-compare-select">
+                                        <option value="yoy">Year-to-Year</option>
+                                        <option value="mom">Month-to-Month</option>
+                                    </select>
+                                </div>
+
+                                <div class="sales-compare-field">
+                                    <label class="sales-compare-label" for="compareYear1">Period 1 - Year</label>
+                                    <select id="compareYear1" class="form-select sales-compare-select"></select>
+                                </div>
+
+                                <div class="sales-compare-field comparison-month-field">
+                                    <label class="sales-compare-label" for="compareMonth1">Period 1 - Month</label>
+                                    <select id="compareMonth1" class="form-select sales-compare-select"></select>
+                                </div>
+
+                                <div class="sales-compare-field">
+                                    <label class="sales-compare-label" for="compareYear2">Period 2 - Year</label>
+                                    <select id="compareYear2" class="form-select sales-compare-select"></select>
+                                </div>
+
+                                <div class="sales-compare-field comparison-month-field">
+                                    <label class="sales-compare-label" for="compareMonth2">Period 2 - Month</label>
+                                    <select id="compareMonth2" class="form-select sales-compare-select"></select>
+                                </div>
+
+                                <div class="sales-comparison-actions">
+                                    <button id="salesComparisonApplyBtn" class="ibp-btn-primary" type="button">Compare</button>
+                                    <button id="salesComparisonResetBtn" class="ibp-btn-dark" type="button">Reset</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="sales-comparison-chart-grid">
+                        <div class="card shadow-sm border-0 dashboard-card sales-comparison-chart-card">
+                            <div class="card-body">
+                                <h3 class="sales-section-title">Sales Comparison Chart</h3>
+                                <div id="comparisonSalesTitle" class="sales-subtitle">Comparative sales trends</div>
+                                <div class="sales-comparison-canvas-wrap">
+                                    <canvas id="comparisonSalesChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card shadow-sm border-0 dashboard-card sales-comparison-chart-card">
+                            <div class="card-body">
+                                <h3 class="sales-section-title">Profit Comparison Chart</h3>
+                                <div id="comparisonProfitTitle" class="sales-subtitle">Comparative profit trends</div>
+                                <div class="sales-comparison-canvas-wrap">
+                                    <canvas id="comparisonProfitChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- /Comparison tab -->
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="/static/sales_dashboard.js"></script>
+{% endblock %}

@@ -1,0 +1,403 @@
+{% extends "base.html" %}
+{% import "components/report_shared.html" as rpt %}
+
+{% block content %}
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  var header = document.querySelector(".ibp-page-header");
+  if (header) header.classList.add("report-hidden");
+});
+</script>
+
+<div class="container-fluid report-page report-view-page px-0">
+
+    <div class="ibp-panel mb-4">
+        <div class="d-flex justify-content-between align-items-start flex-wrap gap-3 report-header">
+            <div>
+                <h2 class="fw-bold mb-1">{{ report_data.metadata.report_title }}</h2>
+                <p class="mb-0">{{ report_data.metadata.report_subtitle }}</p>
+            </div>
+
+            <div class="text-end small text-muted">
+                <div><strong>Period:</strong> {{ report_data.metadata.report_period_label }}</div>
+                <!-- <div><strong>Category:</strong> {{ report_data.metadata.selected_category }}</div> -->
+                <div><strong>Generated on:</strong> {{ report_data.metadata.generated_on }}</div>
+                <div><strong>Forecast Year:</strong> {{ report_data.metadata.forecast_year }}</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="ibp-panel mb-4 no-print">
+        <form method="get" action="/report/view">
+            <div class="row g-3 align-items-end">
+                <div class="col-md-3">
+                    <label class="form-label fw-semibold">Year</label>
+                    <select name="year" class="form-select">
+                        {% for year in available_years %}
+                        <option value="{{ year }}" {% if selected_year == year %}selected{% endif %}>{{ year }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- <div class="col-md-3">
+                    <label class="form-label fw-semibold">Category</label>
+                    <select name="category" class="form-select">
+                        <option value="All Categories" {% if selected_category == "All Categories" %}selected{% endif %}>All Categories</option>
+                        {% for category in available_categories %}
+                        <option value="{{ category }}" {% if selected_category == category %}selected{% endif %}>{{ category }}</option>
+                        {% endfor %}
+                    </select>
+                </div> -->
+
+                <!-- <div class="col-md-3">
+                    <label class="form-label fw-semibold">Report Type</label>
+                    <select name="report_type" class="form-select">
+                        <option value="full" {% if report_type == "full" %}selected{% endif %}>Full Report</option>
+                        <option value="summary" {% if report_type == "summary" %}selected{% endif %}>Summary Report</option>
+                        <option value="category" {% if report_type == "category" %}selected{% endif %}>Category Report</option>
+                    </select>
+                </div> -->
+
+                <div class="col-md-3">
+                    <div class="report-filter-actions">
+                        <button type="submit" class="ibp-btn-primary">View Report</button>
+                        <!-- <a href="/report/view" class="ibp-btn-dark text-decoration-none text-center">Reset</a> -->
+                        <a href="/report/download?year={{ selected_year }}&category={{ selected_category }}&report_type={{ report_type }}"
+                           class="ibp-btn-primary text-decoration-none text-center">
+                            Download
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="report-kpi-row mb-4">
+        <div class="ibp-card report-summary-card">
+            <div>
+                <div class="text-muted small">Total Sales</div>
+                <div class="fs-3 fw-bold">{{ rpt.metric_value(report_data.summary_cards.total_sales, "currency") }}</div>
+            </div>
+        </div>
+
+        <div class="ibp-card report-summary-card">
+            <div>
+                <div class="text-muted small">Total Profit</div>
+                <div class="fs-3 fw-bold">{{ rpt.metric_value(report_data.summary_cards.total_profit, "currency") }}</div>
+            </div>
+        </div>
+
+        <div class="ibp-card report-summary-card">
+            <div>
+                <div class="text-muted small">Orders</div>
+                <div class="fs-3 fw-bold">{{ rpt.metric_value(report_data.summary_cards.total_orders, "int") }}</div>
+            </div>
+        </div>
+
+        <div class="ibp-card report-summary-card">
+            <div>
+                <div class="text-muted small">Avg Review Score</div>
+                <div class="fs-3 fw-bold">{{ rpt.metric_value(report_data.summary_cards.avg_review_score, "float2") }}</div>
+            </div>
+        </div>
+
+        <div class="ibp-card report-summary-card">
+            <div>
+                <div class="text-muted small">Sales Growth</div>
+                <div class="fs-3">{{ rpt.percent_value(report_data.summary_cards.sales_growth_pct) }}</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="ibp-panel mb-4" id="executive-summary">
+        <div class="report-section-title">Executive Summary</div>
+        {% for paragraph in report_data.executive_summary %}
+        <p class="mb-2">{{ paragraph }}</p>
+        {% endfor %}
+    </div>
+
+    <div class="ibp-panel mb-4" id="sales-performance">
+        <div class="report-section-title">Sales Performance Review</div>
+
+        <div class="row g-4">
+            <div class="col-lg-6 report-kpi-left report-kpi-sales">
+                <h6 class="fw-bold mb-3">Sales KPI Summary</h6>
+                {{ rpt.sales_kpi_table(report_data) }}
+            </div>
+
+            <div class="col-lg-6 report-insight-right report-insight-sales">
+                <h6 class="fw-bold mb-3">Sales Insights</h6>
+                {% for insight in report_data.sales_section.insights %}
+                <p class="mb-2">{{ insight }}</p>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="row g-4 mt-1">
+            <div class="col-lg-6">
+                <h6 class="fw-bold mb-3">Top Revenue-Contributing Categories</h6>
+                <div class="table-responsive">
+                    <table class="table table-striped table-sm align-middle sales-revenue-table">
+                        <thead>
+                            <tr>
+                                <th>Category</th>
+                                <th>Sales</th>
+                                <th>Profit</th>
+                                <th>Orders</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for row in report_data.sales_section.top_contributors %}
+                            <tr>
+                                <td>{{ row.category }}</td>
+                                <td>{{ rpt.metric_value(row.sales, "currency") }}</td>
+                                <td>{{ rpt.metric_value(row.profit, "currency") }}</td>
+                                <td>{{ rpt.metric_value(row.orders, "int") }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <h6 class="fw-bold mb-3">Lowest Revenue-Contributing Categories</h6>
+                <div class="table-responsive">
+                    <table class="table table-striped table-sm align-middle sales-revenue-table">
+                        <thead>
+                            <tr>
+                                <th>Category</th>
+                                <th>Sales</th>
+                                <th>Profit</th>
+                                <th>Orders</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for row in report_data.sales_section.low_contributors %}
+                            <tr>
+                                <td>{{ row.category }}</td>
+                                <td>{{ rpt.metric_value(row.sales, "currency") }}</td>
+                                <td>{{ rpt.metric_value(row.profit, "currency") }}</td>
+                                <td>{{ rpt.metric_value(row.orders, "int") }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4 mt-1">
+            <div class="col-lg-6">
+                <h6 class="fw-bold mb-3">Fastest Growing Categories</h6>
+                <div class="table-responsive">
+                    <table class="table table-striped table-sm align-middle sales-growth-table">
+                        <thead>
+                            <tr>
+                                <th>Category</th>
+                                <th>Sales Growth</th>
+                                <th>Profit Growth</th>
+                                <th>Trend</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for row in report_data.sales_section.fastest_growing %}
+                            <tr>
+                                <td>{{ row.category }}</td>
+                                <td>{{ rpt.percent_value(row.sales_growth_pct) }}</td>
+                                <td>{{ rpt.percent_value(row.profit_growth_pct) }}</td>
+                                <td>{{ row.trend }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="col-lg-6">
+                <h6 class="fw-bold mb-3">{{ report_data.sales_section.declining_section_title }}</h6>
+                <div class="table-responsive">
+                    <table class="table table-striped table-sm align-middle sales-growth-table">
+                        <thead>
+                            <tr>
+                                <th>Category</th>
+                                <th>Sales Growth</th>
+                                <th>Profit Growth</th>
+                                <th>Trend</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for row in report_data.sales_section.most_declining %}
+                            <tr>
+                                <td>{{ row.category }}</td>
+                                <td>{{ rpt.percent_value(row.sales_growth_pct) }}</td>
+                                <td>{{ rpt.percent_value(row.profit_growth_pct) }}</td>
+                                <td>{{ row.trend }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="ibp-panel mb-4" id="review-analysis">
+        <div class="report-section-title">Customer Review Analysis</div>
+
+        <div class="row g-4">
+            <div class="col-lg-6 report-kpi-left report-kpi-review">
+                <h6 class="fw-bold mb-3">Review KPI Summary</h6>
+                {{ rpt.review_kpi_table(report_data) }}
+            </div>
+
+            <div class="col-lg-6 report-insight-right report-insight-review">
+                <h6 class="fw-bold mb-3">Review Insights</h6>
+                {% for insight in report_data.review_section.insights %}
+                <p class="mb-2">{{ insight }}</p>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="row g-4 mt-1">
+            <div class="col-lg-4 review-topics-col">
+                <h6 class="fw-bold mb-3">Review Topics</h6>
+                <div class="table-responsive review-topics-wrap">
+                    <table class="table table-striped table-sm align-middle review-topics-table">
+                        <thead>
+                            <tr>
+                                <th>Topic</th>
+                                <th>Count</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for row in report_data.review_section.topics %}
+                            <tr>
+                                <td>{{ row.topic }}</td>
+                                <td>{{ rpt.metric_value(row.count, "int") }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="col-lg-8 review-summary-col">
+                <h6 class="fw-bold mb-3">Review Summary by Category</h6>
+                <div class="table-responsive review-summary-wrap">
+                    <table class="table table-striped table-sm align-middle review-summary-table">
+                        <thead>
+                            <tr>
+                                <th>Category</th>
+                                <th>Avg Score</th>
+                                <th>Sentiment</th>
+                                <th>Total Reviews</th>
+                                <th>Dominant Topic</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for row in report_data.review_section.category_review_summary %}
+                            <tr>
+                                <td>{{ row.category }}</td>
+                                <td>{{ rpt.metric_value(row.avg_review_score, "float2") }}</td>
+                                <td>{{ rpt.metric_value(row.avg_sentiment_score, "float2") }}</td>
+                                <td>{{ rpt.metric_value(row.total_reviews, "int") }}</td>
+                                <td>{{ row.dominant_topic }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="ibp-panel mb-4" id="integrated-insight">
+        <div class="report-section-title">Business Insight and Recommendation</div>
+        <p class="mb-3 text-muted">
+            This section is based on the latest recent period: {{ report_data.combined_insight.window_label }}.
+        </p>
+
+        <div class="row g-3 mb-4">
+            <div class="col-lg-4 col-md-6">
+                <div class="report-zone-card">
+                    <h6 class="fw-bold">Strong Zone</h6>
+                    {% for row in report_data.combined_insight.strong_zone %}
+                    <p class="mb-2"><strong>{{ row.category }}</strong><br><span class="small text-muted">{{ row.action }}</span></p>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="report-zone-card">
+                    <h6 class="fw-bold">Weak Zone</h6>
+                    {% for row in report_data.combined_insight.weak_zone %}
+                    <p class="mb-2"><strong>{{ row.category }}</strong><br><span class="small text-muted">{{ row.action }}</span></p>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="report-zone-card">
+                    <h6 class="fw-bold">Opportunity Zone</h6>
+                    {% for row in report_data.combined_insight.opportunity_zone %}
+                    <p class="mb-2"><strong>{{ row.category }}</strong><br><span class="small text-muted">{{ row.action }}</span></p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <div class="table-responsive mt-3">
+            <table class="table table-striped table-sm align-middle">
+                <thead>
+                    <tr>
+                        <th>Category</th>
+                        <th>Sales Performance</th>
+                        <th>Review Sentiment</th>
+                        <th>Business Insight</th>
+                        <th>Suggested Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in report_data.combined_insight.summary_table %}
+                    <tr>
+                        <td>{{ row.category }}</td>
+                        <td>{{ row.sales_performance }}</td>
+                        <td>{{ row.review_sentiment }}</td>
+                        <td>{{ row.business_insight }}</td>
+                        <td>{{ row.suggested_action }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="ibp-panel mb-4" id="forecast-outlook">
+        <div class="report-section-title">Forecast Outlook</div>
+
+        <div class="row g-4">
+            <div class="col-lg-6 report-kpi-left report-kpi-forecast">
+                <h6 class="fw-bold mb-3">Forecast Summary</h6>
+                {{ rpt.forecast_summary_table(report_data) }}
+            </div>
+
+            <div class="col-lg-6 report-insight-right report-insight-forecast">
+                <h6 class="fw-bold mb-3">Forecast Insights</h6>
+                {% for insight in report_data.forecast_section.insights %}
+                <p class="mb-2">{{ insight }}</p>
+                {% endfor %}
+            </div>
+        </div>
+
+        {{ rpt.category_sales_forecast_table(report_data.forecast_section.category_forecast) }}
+        {{ rpt.category_transaction_forecast_table(report_data.forecast_section.product_forecast) }}
+    </div>
+
+    <div class="d-flex flex-wrap gap-2 justify-content-end no-print">
+        <a href="/" class="ibp-btn-dark text-decoration-none text-center">Home</a>
+        <a href="/report/download?year={{ selected_year }}&category={{ selected_category }}&report_type={{ report_type }}"
+           class="ibp-btn-primary text-decoration-none text-center">
+            Download
+        </a>
+    </div>
+</div>
+{% endblock %}
